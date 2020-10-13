@@ -73,10 +73,7 @@
 
 
                 <!-- CONTENT AREA -->
-                <div class="container mt-2">
                     {{ $slot }}
-                </div>
-                
                 <!-- CONTENT AREA -->
 
             </div>
