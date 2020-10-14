@@ -39,7 +39,7 @@ class Register extends Controller
         $email = $request->post('email');
         $no_hp = $request->post('no_hp');
         $password = Hash::make($request->post('password'));
-        dd($request->post('password'));
+        dd($password);
     }
 
     /**

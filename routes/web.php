@@ -17,6 +17,10 @@ use App\Http\Controllers\Register;
 |
 */
 
+Route::get('/', function() {
+    return redirect(route('login.index'));
+});
+
 Route::resource('/login', Login::class)->names([
     'index' => 'login.index'
 ]);

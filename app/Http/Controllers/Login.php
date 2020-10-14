@@ -2,10 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Repository\UserRepositoryInterface;
 use Illuminate\Http\Request;
 
 class Login extends Controller
 {
+    private $userRepository;
+
+    public function __construct(UserRepositoryInterface $userRepository)
+    {
+        $this->userRepository = $userRepository;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -13,7 +21,9 @@ class Login extends Controller
      */
     public function index()
     {
-        return view('login');
+        $users = $this->userRepository->all();
+        dd($users);
+        //return view('login');
     }
 
     /**
