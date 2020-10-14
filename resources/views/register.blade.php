@@ -28,7 +28,7 @@
                     <div class="form-content">
 
                         <h1 class="">Register</h1>
-                        <p class="signup-link register">Already have an account? <a href="auth_login_boxed.html">Log
+                        <p class="signup-link register">Already have an account? <a href="{{ route('login.index') }}">Log
                                 in</a></p>
                         <form class="text-left" action="{{url('register') }}" method="post">
                         @csrf
