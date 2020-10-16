@@ -3,10 +3,10 @@
 namespace App\Repository\Eloquent;
 
 use App\Models\Barang;
-use App\Repository\BarangRepositotyInterface;
+use App\Repository\BarangRepositoryInterface;
 use Illuminate\Support\Collection;
 
-class BarangRepository extends BaseRepository implements BarangRepositotyInterface
+class BarangRepository extends BaseRepository implements BarangRepositoryInterface
 {
 
    /**

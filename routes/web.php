@@ -6,6 +6,7 @@ use App\Http\Livewire\About;
 use App\Http\Middleware\Authenticate;
 use App\Http\Controllers\Login;
 use App\Http\Controllers\Register;
+use App\Http\Controllers\Barang;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -34,3 +35,5 @@ Route::middleware([Authenticate::class])->group(function() {
     Route::get('/home', Home::class)->name('home');
     Route::get('/about', About::class)->name('about');
 });
+
+Route::resource('/barang', Barang::class);

@@ -3,11 +3,16 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Repository;
+use App\Repository\Eloquent\BarangRepository;
 
 class Barang extends Controller
 {
     private $barangRepository;
+
+    public function __construct(BarangRepository $barangRepository)
+    {
+        $this->barangRepository = $barangRepository;
+    }
     
     /**
      * Display a listing of the resource.
@@ -16,7 +21,8 @@ class Barang extends Controller
      */
     public function index()
     {
-        //
+        $barang = $this->barangRepository->all();
+        echo '<pre>';print_r($barang);die;
     }
 
     /**
