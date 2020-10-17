@@ -26,6 +26,12 @@
                 <div class="form-container">
                     <div class="form-content">
 
+                        @if (session('register'))
+                        <div class="alert alert-success">
+                            {{ session('register') }}
+                        </div>
+                        @endif
+
                         <h1 class="">Sign In</h1>
                         <p class="">Log in to your account to continue.</p>
 

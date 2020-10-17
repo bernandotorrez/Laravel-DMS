@@ -22,7 +22,6 @@ class Barang extends Controller
     public function index()
     {
         $barang = $this->barangRepository->all();
-        echo '<pre>';print_r($barang);die;
     }
 
     /**

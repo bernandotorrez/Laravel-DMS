@@ -22,9 +22,7 @@ Route::get('/', function() {
     return redirect(route('login.index'));
 });
 
-Route::resource('/login', Login::class)->names([
-    'index' => 'login.index'
-]);
+Route::resource('/login', Login::class);
 
 Route::resource('/register', Register::class)->names([
     'index' => 'register.index',

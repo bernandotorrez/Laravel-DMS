@@ -22,8 +22,7 @@ class Login extends Controller
     public function index()
     {
         $users = $this->userRepository->all();
-        dd($users);
-        //return view('login');
+        return view('login');
     }
 
     /**

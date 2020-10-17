@@ -4,9 +4,16 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use App\Repository\Eloquent\UserRepository;
 
 class Register extends Controller
 {
+    protected $userRepository;
+
+    public function __construct(UserRepository $userRepository)
+    {
+        $this->userRepository = $userRepository;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -35,11 +42,18 @@ class Register extends Controller
      */
     public function store(Request $request)
     {
-        $username = $request->post('username');
+        $name = $request->post('username');
         $email = $request->post('email');
         $no_hp = $request->post('no_hp');
         $password = Hash::make($request->post('password'));
-        dd($password);
+
+        $data = array('name' => $name, 'email' => $email, 'no_hp' => $no_hp, 'password' => $password);
+        
+        if($this->userRepository->create($data)) {
+            return redirect(route('login.index'))->with('register', 'Register Success');
+        } else {
+            return redirect(route('register.index'))->with('register', 'Register Failed!');
+        }
     }
 
     /**
