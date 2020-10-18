@@ -50,9 +50,9 @@ class Register extends Controller
         $data = array('name' => $name, 'email' => $email, 'no_hp' => $no_hp, 'password' => $password);
         
         if($this->userRepository->create($data)) {
-            return redirect(route('login.index'))->with('register', 'Register Success');
+            return redirect(route('login.index'))->with('register_success', 'Register Success');
         } else {
-            return redirect(route('register.index'))->with('register', 'Register Failed!');
+            return redirect(route('register.index'))->with('register_failed', 'Register Failed!');
         }
     }
 

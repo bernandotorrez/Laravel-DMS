@@ -3,9 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Livewire\Home;
 use App\Http\Livewire\About;
+use App\Http\Livewire\Page\Login\LoginIndex;
+use App\Http\Livewire\Page\Register\RegisterIndex;
 use App\Http\Middleware\Authenticate;
-use App\Http\Controllers\Login;
-use App\Http\Controllers\Register;
 use App\Http\Controllers\Barang;
 /*
 |--------------------------------------------------------------------------
@@ -22,12 +22,8 @@ Route::get('/', function() {
     return redirect(route('login.index'));
 });
 
-Route::resource('/login', Login::class);
-
-Route::resource('/register', Register::class)->names([
-    'index' => 'register.index',
-    'do-register' => 'register.store'
-]);
+Route::get('/login', LoginIndex::class)->name('login.index');
+Route::get('/register', RegisterIndex::class)->name('register.index');
 
 Route::middleware([Authenticate::class])->group(function() {   
     Route::get('/home', Home::class)->name('home');
