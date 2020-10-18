@@ -24,7 +24,7 @@
     <script src="{{ asset('bootstrap/js/bootstrap.min.js') }}"></script>
 
     <!-- END GLOBAL MANDATORY SCRIPTS -->
-    <script src="{{ asset('assets/js/authentication/form-2.js') }}"></script>
+    <script src="{{ asset('assets/js/authentication/form-2.js') }}" defer></script>
 
     <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
     @livewireScripts
