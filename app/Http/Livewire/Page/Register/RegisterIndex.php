@@ -10,6 +10,7 @@ class RegisterIndex extends Component
 {
     protected $pageTitle = 'Register DMS';
     public $name, $email, $no_hp, $password;
+    public $openButton = true;
 
     protected $rules = [
         'name'      =>  'required|min:10',
@@ -47,13 +48,21 @@ class RegisterIndex extends Component
     {
         $this->validate();
 
-        $userRepository->create([
-            'name' => $this->name,
-            'email' => $this->email,
-            'no_hp' => $this->no_hp,
-            'password' => Hash::make($this->password)
-        ]);
+        $checkEmail = $userRepository->findEmail($this->email);
 
-        return redirect(route('register.index'))->with('register_success', 'Register Success');
+        if($checkEmail == 1) {
+            session()->flash('register_failed', 'Email is Already Exist!');
+        } else {
+            $userRepository->create([
+                'name' => $this->name,
+                'email' => $this->email,
+                'no_hp' => $this->no_hp,
+                'password' => Hash::make($this->password)
+            ]);
+    
+            session()->flash('register_success', 'Register Success');
+
+            return redirect()->route('login.index');
+        }
     }
 }

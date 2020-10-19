@@ -5,10 +5,10 @@
                 <div class="form-container">
                     <div class="form-content">
 
-                        @if (session('register_success'))
-                        <div class="alert alert-success">
-                            {{ session('register_success') }}
-                        </div>
+                        @if (session()->has('register_success'))
+                            <div class="alert alert-success">
+                                {{ session('register_success') }}
+                            </div>
                         @endif
 
                         <h1 class="">Sign In</h1>

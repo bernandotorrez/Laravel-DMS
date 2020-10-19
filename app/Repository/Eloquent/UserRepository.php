@@ -26,4 +26,14 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
    {
        return $this->model->all();    
    }
+
+   /**
+    * @param $email
+    * @return int
+    */
+   public function findEmail(string $email): int {
+       $checkEmail = User::select('email')->where('email', $email)->count();
+
+       return $checkEmail;
+   }
 }
