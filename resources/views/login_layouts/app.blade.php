@@ -16,6 +16,14 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/forms/theme-checkbox-radio.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/forms/switches.css') }}">
 
+    <style>
+        .error {
+            color: #e7515a;
+            font-size: 13px;
+            letter-spacing: 1px;
+        }
+    </style>
+
     @livewireStyles
 
     <!-- BEGIN GLOBAL MANDATORY SCRIPTS -->

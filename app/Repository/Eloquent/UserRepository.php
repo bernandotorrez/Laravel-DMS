@@ -36,4 +36,12 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
 
        return $checkEmail;
    }
+
+   public function getEmail(string $email): Collection
+   {
+       $where = ['email' => $email, 'status' => '1'];
+       $getEmail = User::select('email', 'password')->where($where)->get();
+
+       return $getEmail;
+   }
 }

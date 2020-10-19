@@ -10,7 +10,6 @@ class RegisterIndex extends Component
 {
     protected $pageTitle = 'Register DMS';
     public $name, $email, $no_hp, $password;
-    public $openButton = true;
 
     protected $rules = [
         'name'      =>  'required|min:10',
@@ -33,15 +32,19 @@ class RegisterIndex extends Component
         $this->validateOnly($propertyName);
     }
 
-    // public function mount(UserRepository $userRepository)
-    // {
-    //     $this->userRepository = $userRepository;
-    // }
-
     public function render()
     {   
         $data = array('title' => $this->pageTitle);
         return view('livewire.page.register.register-index')->layout('login_layouts.app', $data);
+    }
+
+    public function mount() {
+        $this->resetForm();
+    }
+
+    public function resetForm()
+    {
+        $this->reset(['name', 'email', 'no_hp', 'password']);
     }
 
     public function register(UserRepository $userRepository)

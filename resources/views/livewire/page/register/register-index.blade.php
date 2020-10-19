@@ -40,7 +40,7 @@
                                         <circle cx="12" cy="12" r="4"></circle>
                                         <path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-3.92 7.94"></path>
                                     </svg>
-                                    <input id="email" name="email" type="text" value="" class="form-control"
+                                    <input id="email" name="email" type="text" class="form-control"
                                         placeholder="Email" autocomplete="off" wire:model="email">
                                         @error('email') <span class="error">{{ $message }}</span> @enderror
                                 </div>
@@ -83,20 +83,9 @@
                                     @error('password') <span class="error">{{ $message }}</span> @enderror
                                 </div>
 
-                                <div class="field-wrapper terms_condition">
-                                    <div class="n-chk">
-                                        <label class="new-control new-checkbox checkbox-primary">
-                                            <input type="checkbox" class="new-control-input">
-                                            <span class="new-control-indicator"></span><span>I agree to the <a
-                                                    href="javascript:void(0);"> terms and conditions </a></span>
-                                        </label>
-                                    </div>
-
-                                </div>
-
                                 <div class="d-sm-flex justify-content-between">
                                     <div class="field-wrapper">
-                                        <button class="btn btn-primary" value="" wire:loading.attr="disabled">Get Started!</button>
+                                        <button class="btn btn-primary" wire:loading.attr="disabled">Get Started!</button>
                                     </div>
                                 </div>
 

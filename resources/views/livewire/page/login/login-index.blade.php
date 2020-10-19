@@ -11,10 +11,16 @@
                             </div>
                         @endif
 
+                        @if (session()->has('login_failed'))
+                            <div class="alert alert-danger">
+                                {{ session('login_failed') }}
+                            </div>
+                        @endif
+
                         <h1 class="">Sign In</h1>
                         <p class="">Log in to your account to continue.</p>
 
-                        <form class="text-left" wire:submit.prevent="do-register">
+                        <form class="text-left" wire:submit.prevent="login">
                             <div class="form">
 
                                 <div id="email-field" class="field-wrapper input">
@@ -26,7 +32,8 @@
                                         <circle cx="12" cy="7" r="4"></circle>
                                     </svg>
                                     <input id="email" name="email" type="text" class="form-control"
-                                        placeholder="e.g Bernand.Hermawan@eurokars.co.id">
+                                        placeholder="e.g Bernand.Hermawan@eurokars.co.id" wire:model="email">
+                                        @error('email') <span class="error">{{ $message }}</span> @enderror
                                 </div>
 
                                 <div id="password-field" class="field-wrapper input mb-2">
@@ -42,7 +49,8 @@
                                         <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
                                     </svg>
                                     <input id="password" name="password" type="password" class="form-control"
-                                        placeholder="Password">
+                                        placeholder="Password" wire:model="password">
+                                        @error('password') <span class="error">{{ $message }}</span> @enderror
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                         stroke-linejoin="round" id="toggle-password" class="feather feather-eye">
@@ -52,7 +60,7 @@
                                 </div>
                                 <div class="d-sm-flex justify-content-between">
                                     <div class="field-wrapper">
-                                        <button class="btn btn-primary" value="">Log In</button>
+                                        <button class="btn btn-primary">Log In</button>
                                     </div>
                                 </div>
 
