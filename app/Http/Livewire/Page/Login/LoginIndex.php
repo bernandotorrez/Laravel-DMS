@@ -49,10 +49,14 @@ class LoginIndex extends Component
         
         $user = $userRepository->getEmail($this->email);
 
-        if(count($user) == 1 && Hash::check($this->password, $user[0]->password)) {
-            session()->flash('login_failed', 'Success!');
-        } else {
-            session()->flash('login_failed', 'Email or Password is Wrong!');
-        }
+        Auth::attempt(['email' => $this->email, 'password' => $this->password]);
+
+        return redirect()->route('home');
+
+        // if(count($user) == 1 && Hash::check($this->password, $user[0]->password)) {
+        //     session()->flash('login_failed', 'Success!');
+        // } else {
+        //     session()->flash('login_failed', 'Email or Password is Wrong!');
+        // }
     }
 }

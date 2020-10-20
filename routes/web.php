@@ -6,7 +6,8 @@ use App\Http\Livewire\About;
 use App\Http\Livewire\Page\Login\LoginIndex;
 use App\Http\Livewire\Page\Register\RegisterIndex;
 use App\Http\Middleware\Authenticate;
-use App\Http\Controllers\Barang;
+use Illuminate\Support\Facades\Auth;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -24,10 +25,11 @@ Route::get('/', function() {
 
 Route::get('/login', LoginIndex::class)->name('login.index');
 Route::get('/register', RegisterIndex::class)->name('register.index');
+Route::get('/logout', function() {
+    Auth::logout();;
+});
 
-Route::middleware([Authenticate::class])->group(function() {   
+Route::middleware('auth')->group(function() {   
     Route::get('/home', Home::class)->name('home');
     Route::get('/about', About::class)->name('about');
 });
-
-Route::resource('/barang', Barang::class);
