@@ -26,8 +26,10 @@ Route::get('/', function() {
 Route::get('/login', LoginIndex::class)->name('login.index');
 Route::get('/register', RegisterIndex::class)->name('register.index');
 Route::get('/logout', function() {
-    Auth::logout();;
-});
+    Auth::logout();
+
+    return redirect()->route('login.index');
+})->name('logout');
 
 Route::middleware('auth')->group(function() {   
     Route::get('/home', Home::class)->name('home');
