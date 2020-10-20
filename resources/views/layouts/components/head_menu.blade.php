@@ -23,7 +23,7 @@
                     <div class="media">
                         <img src="assets/img/90x90.jpg" class="img-fluid" alt="admin-profile">
                         <div class="media-body align-self-center">
-                            <h6><span>Hi,</span> Alan</h6>
+                            <h6><span>Hi,</span> {{ auth()->user()->name }}</h6>
                         </div>
                     </div>
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"

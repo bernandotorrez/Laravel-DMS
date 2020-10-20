@@ -1,9 +1,7 @@
 <?php
 
 namespace App\Http\Livewire\Page\Login;
-use App\Repository\Eloquent\UserRepository;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Livewire\Component;
 
 class LoginIndex extends Component
@@ -43,20 +41,14 @@ class LoginIndex extends Component
         $this->validateOnly($propertyName);
     }
 
-    public function login(UserRepository $userRepository)
+    public function login()
     {
         $this->validate();
-        
-        $user = $userRepository->getEmail($this->email);
 
-        Auth::attempt(['email' => $this->email, 'password' => $this->password]);
-
-        return redirect()->route('home');
-
-        // if(count($user) == 1 && Hash::check($this->password, $user[0]->password)) {
-        //     session()->flash('login_failed', 'Success!');
-        // } else {
-        //     session()->flash('login_failed', 'Email or Password is Wrong!');
-        // }
+        if(Auth::attempt(['email' => $this->email, 'password' => $this->password])) {
+            return redirect()->route('home');
+        } else {
+            session()->flash('login_failed', 'Email or Password is Wrong!');
+        }
     }
 }

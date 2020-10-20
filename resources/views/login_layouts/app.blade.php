@@ -13,8 +13,6 @@
     <link href="{{ asset('assets/css/plugins.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/css/authentication/form-2.css') }}" rel="stylesheet" type="text/css" />
     <!-- END GLOBAL MANDATORY STYLES -->
-    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/forms/theme-checkbox-radio.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/forms/switches.css') }}">
 
     <style>
         .error {
@@ -30,9 +28,16 @@
     <script src="{{ asset('assets/js/libs/jquery-3.1.1.min.js') }}"></script>
     <script src="{{ asset('bootstrap/js/popper.min.js') }}"></script>
     <script src="{{ asset('bootstrap/js/bootstrap.min.js') }}"></script>
-
+    <script src="{{ asset('plugins/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
+    <script src="{{ asset('assets/js/app.js') }}"></script>
+    
+    <script>
+        $(document).ready(function() {
+            App.init();
+        });
+    </script>
+    <script src="{{ asset('assets/js/custom.js') }}"></script>
     <!-- END GLOBAL MANDATORY SCRIPTS -->
-    <script src="{{ asset('assets/js/authentication/form-2.js') }}" defer></script>
 
     <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
     @livewireScripts
