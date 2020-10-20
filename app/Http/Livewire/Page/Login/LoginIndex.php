@@ -28,6 +28,10 @@ class LoginIndex extends Component
 
     public function mount()
     {
+        if(Auth::check()) {
+            return redirect()->route('home');
+        }
+
         $this->resetForm();
     }
 

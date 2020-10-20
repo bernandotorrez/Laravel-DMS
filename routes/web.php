@@ -5,7 +5,6 @@ use App\Http\Livewire\Home;
 use App\Http\Livewire\About;
 use App\Http\Livewire\Page\Login\LoginIndex;
 use App\Http\Livewire\Page\Register\RegisterIndex;
-use App\Http\Middleware\Authenticate;
 use Illuminate\Support\Facades\Auth;
 
 /*

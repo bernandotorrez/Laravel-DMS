@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Page\Register;
 
 use Livewire\Component;
 use App\Repository\Eloquent\UserRepository;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class RegisterIndex extends Component
@@ -39,6 +40,9 @@ class RegisterIndex extends Component
     }
 
     public function mount() {
+        if(Auth::check()) {
+            return redirect()->route('home');
+        }
         $this->resetForm();
     }
 
