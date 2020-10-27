@@ -33,7 +33,7 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
     * @return int
     */
    public function findEmail(string $email): int {
-       $checkEmail = User::select('email')->where('email', $email)->count();
+       $checkEmail = $this->model->select('email')->where('email', $email)->count();
 
        return $checkEmail;
    }
@@ -41,7 +41,7 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
    public function getEmail(string $email): Collection
    {
        $where = ['email' => $email, 'status' => '1'];
-       $getEmail = User::select('email', 'password')->where($where)->get();
+       $getEmail = $this->model->select('email', 'password')->where($where)->get();
 
        return $getEmail;
    }
@@ -54,7 +54,7 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
      * @return Collection 
      */
     public function update(int $id, array $attributes): Collection {
-        $update = User::where('id', $id)->update($attributes);
+        $update = $this->model->where('id', $id)->update($attributes);
         
         return $update;
     }
@@ -65,7 +65,7 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
      * @return Collection 
      */
     public function delete(int $id): Collection {
-        $delete = User::where('id', $id)->update(array('status' => 0));
+        $delete = $this->model->where('id', $id)->update(array('status' => 0));
 
         return $delete;
     }

@@ -1,3 +1,6 @@
+@section('title')
+dynamic title here
+@endsection
 <div>
     <div class="form-container outer">
         <div class="form-form">

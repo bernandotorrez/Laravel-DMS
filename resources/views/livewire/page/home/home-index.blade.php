@@ -6,7 +6,7 @@
 
                 <h6>Home</h6>
 
-                <p class="">Home Content</p>
+                <p class="">Home Content {{ $title }}</p>
 
             </div>
         </div>

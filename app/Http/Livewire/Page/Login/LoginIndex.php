@@ -29,7 +29,7 @@ class LoginIndex extends Component
     public function mount()
     {
         if(Auth::check()) {
-            return redirect()->route('home');
+            return redirect()->route('home.index');
         }
 
         $this->resetForm();
@@ -50,7 +50,7 @@ class LoginIndex extends Component
         $this->validate();
 
         if(Auth::attempt(['email' => $this->email, 'password' => $this->password, 'status' => '1'])) {
-            return redirect()->route('home');
+            return redirect()->route('home.index');
         } else {
             session()->flash('login_failed', 'Email or Password is Wrong!');
         }

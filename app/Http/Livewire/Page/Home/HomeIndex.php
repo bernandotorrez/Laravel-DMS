@@ -6,8 +6,12 @@ use Livewire\Component;
 
 class HomeIndex extends Component
 {
+    protected $pageTitle = "Home";
+    
     public function render()
     {
-        return view('livewire.page.home.home-index');
+        return view('livewire.page.home.home-index')->layout('layouts.app', [
+            'title' => $this->pageTitle
+        ]);
     }
 }
