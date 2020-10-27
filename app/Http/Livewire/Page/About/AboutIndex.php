@@ -11,8 +11,6 @@ class AboutIndex extends Component
 
     public function render()
     {
-        return view('livewire.page.about.about-index', [
-            'title' => $this->pageTitle
-        ]);
+        return view('livewire.page.about.about-index')->layout('layouts.app', array('title' => $this->pageTitle));
     }
 }

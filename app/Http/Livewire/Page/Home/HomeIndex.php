@@ -10,8 +10,6 @@ class HomeIndex extends Component
     
     public function render()
     {
-        return view('livewire.page.home.home-index')->layout('layouts.app', [
-            'title' => $this->pageTitle
-        ]);
+        return view('livewire.page.home.home-index')->layout('layouts.app', array('title' => $this->pageTitle));
     }
 }

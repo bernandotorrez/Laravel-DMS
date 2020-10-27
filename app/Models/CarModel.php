@@ -13,4 +13,5 @@ class CarModel extends Model
 
     protected $table = 'tbl_model_porsche';
     protected $fillable = ['desc_model'];
+    //public $incrementing = false;
 }
