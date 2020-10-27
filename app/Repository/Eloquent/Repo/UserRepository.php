@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Repository\Eloquent;
+namespace App\Repository\Eloquent\Repo;
 
 use App\Models\User;
-use App\Repository\UserRepositoryInterface;
+use App\Repository\Eloquent\Interfaces\UserRepositoryInterface;
+use App\Repository\Eloquent\BaseRepository;
 use Illuminate\Support\Collection;
 
 class UserRepository extends BaseRepository implements UserRepositoryInterface
@@ -44,4 +45,28 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
 
        return $getEmail;
    }
+
+    /**
+     * @param $id
+     * 
+     * @param array $attributes
+     * 
+     * @return Collection 
+     */
+    public function update(int $id, array $attributes): Collection {
+        $update = User::where('id', $id)->update($attributes);
+        
+        return $update;
+    }
+
+    /**
+     * @param $id
+     * 
+     * @return Collection 
+     */
+    public function delete(int $id): Collection {
+        $delete = User::where('id', $id)->update(array('status' => 0));
+
+        return $delete;
+    }
 }

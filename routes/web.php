@@ -1,10 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Livewire\Home;
-use App\Http\Livewire\About;
+use App\Http\Livewire\Page\Home\HomeIndex;
+use App\Http\Livewire\Page\About\AboutIndex;
 use App\Http\Livewire\Page\Login\LoginIndex;
 use App\Http\Livewire\Page\Register\RegisterIndex;
+use App\Http\Livewire\Page\CarModel\CarModelIndex;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -31,6 +32,7 @@ Route::get('/logout', function() {
 })->name('logout');
 
 Route::middleware('auth')->group(function() {   
-    Route::get('/home', Home::class)->name('home');
-    Route::get('/about', About::class)->name('about');
+    Route::get('/home', HomeIndex::class)->name('home.index');
+    Route::get('/about', AboutIndex::class)->name('about.index');
+    Route::get('/car-model', CarModelIndex::class)->name('car-model.index');
 });

@@ -49,7 +49,7 @@ class LoginIndex extends Component
     {
         $this->validate();
 
-        if(Auth::attempt(['email' => $this->email, 'password' => $this->password])) {
+        if(Auth::attempt(['email' => $this->email, 'password' => $this->password, 'status' => '1'])) {
             return redirect()->route('home');
         } else {
             session()->flash('login_failed', 'Email or Password is Wrong!');
