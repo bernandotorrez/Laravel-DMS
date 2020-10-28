@@ -16,12 +16,12 @@ interface CarModelRepositoryInterface
      * 
      * @return Collection 
      */
-    public function update(int $id, array $attributes): Collection;
+    public function update(int $id, array $attributes): int;
 
     /**
      * @param $id
      * 
      * @return Collection 
      */
-    public function delete(int $id): Collection;
+    public function delete(int $id): int;
 }

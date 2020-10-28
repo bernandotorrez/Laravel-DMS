@@ -35,7 +35,7 @@ class CarModelRepository extends BaseRepository implements CarModelRepositoryInt
      * 
      * @return Collection 
      */
-    public function update(int $id, array $attributes): Collection
+    public function update(int $id, array $attributes): int
     {
         return $this->model->where('id', $id)->update($attributes);
     }
@@ -45,7 +45,7 @@ class CarModelRepository extends BaseRepository implements CarModelRepositoryInt
      * 
      * @return Collection 
      */
-    public function delete(int $id): Collection
+    public function delete(int $id): int
     {
         return $this->model->find($id)->delete();
     }

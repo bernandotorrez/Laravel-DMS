@@ -8,11 +8,23 @@
 
                 <p class=""></p>
 
-                <form wire:submit.prevent="addCarModel">
+                <form @if($is_edit) wire:submit.prevent="editCarModel" @else wire:submit.prevent="addCarModel" @endif>
                     @if($insert_status == 'success')
                     <div class="alert alert-success"> Insert Success! </div>
                     @elseif($insert_status == 'fail')
                     <div class="alert alert-danger"> Insert Failed! </div>
+                    @endif
+
+                    @if($update_status == 'success')
+                    <div class="alert alert-success"> Update Success! </div>
+                    @elseif($update_status == 'fail')
+                    <div class="alert alert-danger"> Update Failed! </div>
+                    @endif
+
+                    @if($delete_status == 'success')
+                    <div class="alert alert-success"> Delete Success! </div>
+                    @elseif($delete_status == 'fail')
+                    <div class="alert alert-danger"> Delete Failed! </div>
                     @endif
 
                     <div class="form-group mb-4">
@@ -21,7 +33,13 @@
                             wire:model="model_name">
                         @error('model_name') <span class="error">{{ $message }}</span> @enderror
                     </div>
+
+                    @if($is_edit)
+                    <button type="submit" class="btn btn-success"> Update </button>
+                    @else
                     <button type="submit" class="btn btn-primary"> Submit </button>
+                    @endif
+                    
                 </form>
 
                 <p></p>
@@ -41,8 +59,8 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $data->desc_model }}</td>
                                 <td>
-                                    <button class="btn btn-success"> Edit </button> |
-                                    <button class="btn btn-danger"> Delete </button>
+                                    <button class="btn btn-success" wire:click="showEditForm({{$data}})"> Edit </button> |
+                                    <button class="btn btn-danger" wire:click="deleteCarModel('{{ $data->id }}')"> Delete </button>
                                 </td>
                             </tr>
                             @endforeach

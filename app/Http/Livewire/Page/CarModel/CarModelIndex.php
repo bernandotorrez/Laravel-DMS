@@ -5,13 +5,16 @@ namespace App\Http\Livewire\Page\CarModel;
 use Livewire\Component;
 use App\Repository\Eloquent\Repo\CarModelRepository;
 use Ramsey\Uuid\Uuid;
+use Illuminate\Support\Collection;
 
 class CarModelIndex extends Component
 {
-    protected $pageTitle = "Car Model";
-    public $model_name;
-    public $insert_status;
-    public $car_model_data = [];
+    protected string $pageTitle = "Car Model";
+    public int $id_model = 0;
+    public string $model_name = '';
+    public string $insert_status = '', $update_status = '', $delete_status = '';
+    public Collection $car_model_data;
+    public bool $is_edit = false;
 
     protected $rules = [
         'model_name' => 'required|min:3|max:50'
@@ -53,5 +56,43 @@ class CarModelIndex extends Component
         } else {
             $this->insert_status = 'fail';
         }
+    }
+
+    public function showEditForm($data)
+    {
+        $this->is_edit = true;
+        $this->id_model = $data['id'];
+        $this->model_name = $data['desc_model'];
+    }
+
+    public function editCarModel(CarModelRepository $carModelRepository)
+    {
+        $this->validate();
+
+        $data = array('desc_model' => ucfirst($this->model_name));
+
+        $update = $carModelRepository->update($this->id_model, $data);
+
+        if($update) {
+            $this->update_status = 'success';
+            $this->is_edit = false;
+            $this->resetForm();
+            $this->car_model_data = $carModelRepository->all();
+        } else {
+            $this->update_status = 'fail';
+        }
+    }
+
+    public function deleteCarModel($id, CarModelRepository $carModelRepository)
+    {
+        $delete = $carModelRepository->delete($id);
+
+        if($delete) {
+            $this->delete_status = 'success';
+            $this->car_model_data = $carModelRepository->all(); 
+        } else {
+            $this->delete_status = 'fail';
+        }
+
     }
 }
