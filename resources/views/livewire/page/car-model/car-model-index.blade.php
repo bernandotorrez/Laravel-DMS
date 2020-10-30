@@ -28,16 +28,16 @@
                     @endif
 
                     <div class="form-group mb-4">
-                        <label for="formGroupExampleInput">Model Name</label>
-                        <input type="text" class="form-control" maxlength="50" placeholder="Example : Porsche"
+                        <label for="model_name">Model Name</label>
+                        <input type="text" class="form-control" id="model_name" maxlength="50" placeholder="Example : Porsche"
                             wire:model="model_name">
                         @error('model_name') <span class="error">{{ $message }}</span> @enderror
                     </div>
 
                     @if($is_edit)
-                    <button type="submit" class="btn btn-success"> Update </button>
+                    <button type="submit" class="btn btn-success" id="update"> Update </button>
                     @else
-                    <button type="submit" class="btn btn-primary"> Submit </button>
+                    <button type="submit" class="btn btn-primary" id="submit"> Submit </button>
                     @endif
                     
                 </form>
