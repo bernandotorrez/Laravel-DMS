@@ -23,7 +23,7 @@ class LoginIndex extends Component
     public function render()
     {
         $data = array('title' => $this->pageTitle);
-        return view('livewire.page.login.login-index')->layout('login_layouts.app', $data);
+        return view('livewire.page.login.login-index')->layout('layouts.app', $data);
     }
 
     public function mount()

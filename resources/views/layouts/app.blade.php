@@ -11,6 +11,11 @@
     <link href="https://fonts.googleapis.com/css?family=Quicksand:400,500,600,700&display=swap" rel="stylesheet">
     <link href="{{ asset('bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/css/plugins.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ mix('css/app.css') }}" rel="stylesheet" type="text/css" />
+
+    @if(Request::is('login') || Request::is('logout'))
+    <link href="{{ asset('assets/css/authentication/form-2.css') }}" rel="stylesheet" type="text/css" />
+    @endif
     <!-- END GLOBAL MANDATORY STYLES -->
     
     <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM STYLES -->
@@ -47,6 +52,8 @@
         });
     </script>
     <script src="{{ asset('assets/js/custom.js') }}"></script>
+    
+    @stack('scripts')
     <!-- END GLOBAL MANDATORY SCRIPTS -->
 
     <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
@@ -59,7 +66,9 @@
 <body class="sidebar-noneoverflow">
     
     <!--  BEGIN NAVBAR  -->
+    @if(!Request::is('login') && !Request::is('logout'))
     @include('layouts.components.head_menu')
+    @endif
     <!--  END NAVBAR  -->
 
     <!--  BEGIN MAIN CONTAINER  -->
@@ -69,7 +78,9 @@
         <div class="search-overlay"></div>
 
         <!--  BEGIN TOPBAR  -->
+        @if(!Request::is('login') && !Request::is('logout'))
         @include('layouts.components.menu')
+        @endif
         <!--  END TOPBAR  -->
         
         <!--  BEGIN CONTENT AREA  -->
