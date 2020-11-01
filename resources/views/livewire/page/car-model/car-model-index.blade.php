@@ -45,43 +45,7 @@
                 <p></p>
 
                 <div class="table-responsive mt-4">
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Action</th>
-                                <th>No</th>
-                                <th>Model Name</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($car_model_data as $data)
-                            <tr>
-                                <td><input type="checkbox" class="new-control-input" wire:click="updateId({{ $data->id }})"></td>
-                                <td>{{ $loop->iteration }}</td>
-                                <td>{{ $data->desc_model }}</td>
-                                <td>
-                                    <button class="btn btn-success" wire:click="showEditForm({{$data}})"> Edit </button>
-                                    |
-                                    <button class="btn btn-danger" wire:click="deleteCarModel('{{ $data->id }}')">
-                                        Delete </button>
-                                </td>
-                            </tr>
-                            @endforeach
-                        <tbody>
-                    </table>
-                </div>
-
-                <div class="table-responsive mt-4">
-                    <table class="table table-bordered" id="users-table">
-                        <thead>
-                            <tr>
-                                <th>Action</th>
-                                <th>Id</th>
-                                <th>Desc Model</th>
-                            </tr>
-                        </thead>
-                    </table>
+                <livewire:car-model-table/>
                 </div>
             </div>
         </div>
@@ -90,7 +54,7 @@
 </div>
 
 @push('scripts')
-<script>
+<!-- <script>
 $(function() {
     $('#users-table').DataTable({
         processing: true,
@@ -103,5 +67,15 @@ $(function() {
         ]
     });
 });
-</script>
+
+function editForm() {
+    var id = getIdCheckbox();
+   window.location.href = '{!! url('/car-model/edit') !!}'+'/'+id
+}
+
+function getIdCheckbox() {
+    var closestTr = $(':checkbox:checked').closest('tr');
+    return closestTr.find('.new-control-input').attr('data-id');
+}
+</script> -->
 @endpush

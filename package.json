@@ -20,6 +20,8 @@
         "vue-template-compiler": "^2.6.12"
     },
     "dependencies": {
+        "@fortawesome/fontawesome-free": "^5.15.1",
+        "font-awesome": "^4.7.0",
         "turbolinks": "^5.2.0"
     }
 }

@@ -35,6 +35,9 @@ Route::middleware('auth')->group(function() {
     Route::get('/home', HomeIndex::class)->name('home.index');
     Route::get('/about', AboutIndex::class)->name('about.index');
     Route::get('/car-model', CarModelIndex::class)->name('car-model.index');
+    Route::get('/car-model/edit/{id}', function($id) {
+       dd($id); 
+    });
 });
 
 Route::get('/car-model/json', [DatatablesController::class, 'carModelJson'])->name('datatable.car-model');

@@ -63,7 +63,7 @@ dynamic title here
                                 </div>
                                 <div class="d-sm-flex justify-content-between">
                                     <div class="field-wrapper">
-                                        <button class="btn btn-primary" id="login">Log In</button>
+                                        <button class="btn btn-primary" id="login" wire:offline.attr="disabled">Log In</button>
                                     </div>
                                 </div>
 
