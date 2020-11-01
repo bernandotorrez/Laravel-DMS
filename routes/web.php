@@ -7,7 +7,7 @@ use App\Http\Livewire\Page\Login\LoginIndex;
 use App\Http\Livewire\Page\Register\RegisterIndex;
 use App\Http\Livewire\Page\CarModel\CarModelIndex;
 use Illuminate\Support\Facades\Auth;
-
+use App\Http\Controllers\DatatablesController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -36,3 +36,5 @@ Route::middleware('auth')->group(function() {
     Route::get('/about', AboutIndex::class)->name('about.index');
     Route::get('/car-model', CarModelIndex::class)->name('car-model.index');
 });
+
+Route::get('/car-model/json', [DatatablesController::class, 'carModelJson'])->name('datatable.car-model');

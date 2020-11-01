@@ -15,6 +15,7 @@ class CarModelIndex extends Component
     public string $insert_status = '', $update_status = '', $delete_status = '';
     public Collection $car_model_data;
     public bool $is_edit = false;
+    public int $id_checkbox = 0;
 
     protected $rules = [
         'model_name' => 'required|min:3|max:50'
@@ -94,5 +95,12 @@ class CarModelIndex extends Component
             $this->delete_status = 'fail';
         }
 
+    }
+
+    public function updateId($id)
+    {
+        $this->id_checkbox = $id;
+
+        dd($id);
     }
 }

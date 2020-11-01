@@ -11,6 +11,7 @@
     <link href="https://fonts.googleapis.com/css?family=Quicksand:400,500,600,700&display=swap" rel="stylesheet">
     <link href="{{ asset('bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/css/plugins.css') }}" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/datatables.min.css') }}"/>
     <link href="{{ mix('css/app.css') }}" rel="stylesheet" type="text/css" />
 
     @if(Request::is('login') || Request::is('logout'))
@@ -45,6 +46,7 @@
     <script src="{{ asset('bootstrap/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('plugins/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
     <script src="{{ asset('assets/js/app.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/datatables.min.js') }}"></script>
 
     @if(Request::is('login') || Request::is('logout'))
     <script src="{{ asset('assets/js/authentication/form-2.js') }}" defer></script>

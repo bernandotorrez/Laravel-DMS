@@ -29,8 +29,8 @@
 
                     <div class="form-group mb-4">
                         <label for="model_name">Model Name</label>
-                        <input type="text" class="form-control" id="model_name" maxlength="50" placeholder="Example : Porsche"
-                            wire:model="model_name">
+                        <input type="text" class="form-control" id="model_name" maxlength="50"
+                            placeholder="Example : Porsche" wire:model="model_name">
                         @error('model_name') <span class="error">{{ $message }}</span> @enderror
                     </div>
 
@@ -39,7 +39,7 @@
                     @else
                     <button type="submit" class="btn btn-primary" id="submit"> Submit </button>
                     @endif
-                    
+
                 </form>
 
                 <p></p>
@@ -48,6 +48,7 @@
                     <table class="table table-bordered">
                         <thead>
                             <tr>
+                                <th>Action</th>
                                 <th>No</th>
                                 <th>Model Name</th>
                                 <th>Action</th>
@@ -56,11 +57,14 @@
                         <tbody>
                             @foreach($car_model_data as $data)
                             <tr>
+                                <td><input type="checkbox" class="new-control-input" wire:click="updateId({{ $data->id }})"></td>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $data->desc_model }}</td>
                                 <td>
-                                    <button class="btn btn-success" wire:click="showEditForm({{$data}})"> Edit </button> |
-                                    <button class="btn btn-danger" wire:click="deleteCarModel('{{ $data->id }}')"> Delete </button>
+                                    <button class="btn btn-success" wire:click="showEditForm({{$data}})"> Edit </button>
+                                    |
+                                    <button class="btn btn-danger" wire:click="deleteCarModel('{{ $data->id }}')">
+                                        Delete </button>
                                 </td>
                             </tr>
                             @endforeach
@@ -68,8 +72,36 @@
                     </table>
                 </div>
 
+                <div class="table-responsive mt-4">
+                    <table class="table table-bordered" id="users-table">
+                        <thead>
+                            <tr>
+                                <th>Action</th>
+                                <th>Id</th>
+                                <th>Desc Model</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
 
 </div>
+
+@push('scripts')
+<script>
+$(function() {
+    $('#users-table').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: '{!! route('datatable.car-model') !!}',
+        columns: [
+            { data: 'action', name: 'action' },
+            { data: 'id', name: 'id' },
+            { data: 'desc_model', name: 'desc_model' }
+        ]
+    });
+});
+</script>
+@endpush

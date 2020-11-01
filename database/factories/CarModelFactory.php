@@ -22,7 +22,7 @@ class CarModelFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'desc_model' => $this->faker->sentence(1)
         ];
     }
 }
