@@ -30,8 +30,8 @@
                     <div class="form-group mb-4">
                         <label for="model_name">Model Name</label>
                         <input type="text" class="form-control" id="model_name" maxlength="50"
-                            placeholder="Example : Porsche" wire:model="model_name">
-                        @error('model_name') <span class="error">{{ $message }}</span> @enderror
+                            placeholder="Example : Porsche" wire:model="bindCarModel.desc_model">
+                        @error('bindCarModel.desc_model') <span class="error">{{ $message }}</span> @enderror
                     </div>
 
                     @if($is_edit)
@@ -45,8 +45,69 @@
                 <p></p>
 
                 <div class="table-responsive mt-4">
-                <livewire:car-model-table/>
+                <div class="d-flex">
+                    <div class="p-2 align-content-center align-items-center" class="text-center">Per Page : </div>
+                    <div class="p-2">
+                        <select class="form-control" wire:model.lazy="perPageSelected">
+                            @foreach($perPage as $page)
+                                <option value="{{ $page }}">{{ $page }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="ml-auto p-2 text-center alert alert-info" wire:loading wire:target="car_model_paginate">Loading ... </div>
+                    <div class="ml-auto p-2">
+                        <input type="text" class="form-control" wire:model="search" placeholder="Search...">
+                    </div>
                 </div>
+                    <table class="table table-striped table-bordered" id="users-table">
+                        <thead>
+                            <th width="5%">
+                                <!-- <input type="checkbox" 
+                                class="new-control-input" 
+                                wire:model="allChecked" 
+                                wire:click="allChecked"> -->
+                            </th>
+                            <th width="5%">ID</th>
+                            <th>
+                            <button class="btn btn-outline-info" wire:click="sort('desc_model')">Model Name <i class="fas fa-sort"></i></button>
+                                
+                            </th>
+                        </thead>
+                        <tbody>
+                            @foreach($car_model_paginate as $data)
+                            <tr>
+                                <td>
+                                    <input type="checkbox" 
+                                    value="{{ $data->id }}" 
+                                    class="new-control-input" 
+                                    wire:model="checked"
+                                    @if(in_array($data->id, $checked)) checked @endif>
+                                </td>
+                                <td>{{ $data->id }}</td>
+                                <td>{{ $data->desc_model }}</td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+
+                    <div class="d-flex justify-content-center">
+                        {{ $car_model_paginate->links() }}
+                    </div>
+                    
+                </div>
+
+               
+
+                <!-- <div class="table-responsive mt-4">
+                    <button class="btn btn-success" onclick="editForm()">Edit</button>
+                    <table class="table table-striped table-bordered" id="users-table">
+                        <thead>
+                            <th width="5%">Action</th>
+                            <th width="5%">ID</th>
+                            <th>Model Name</th>
+                        </thead>
+                    </table>
+                </div> -->
             </div>
         </div>
     </div>
@@ -55,7 +116,7 @@
 
 @push('scripts')
 <!-- <script>
-$(function() {
+document.addEventListener('livewire:load', function() {
     $('#users-table').DataTable({
         processing: true,
         serverSide: true,
@@ -66,7 +127,9 @@ $(function() {
             { data: 'desc_model', name: 'desc_model' }
         ]
     });
-});
+})
+    
+
 
 function editForm() {
     var id = getIdCheckbox();

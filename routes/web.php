@@ -6,6 +6,7 @@ use App\Http\Livewire\Page\About\AboutIndex;
 use App\Http\Livewire\Page\Login\LoginIndex;
 use App\Http\Livewire\Page\Register\RegisterIndex;
 use App\Http\Livewire\Page\CarModel\CarModelIndex;
+use App\Http\Livewire\Page\CarModel\CarModelEdit;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\DatatablesController;
 /*
@@ -35,9 +36,7 @@ Route::middleware('auth')->group(function() {
     Route::get('/home', HomeIndex::class)->name('home.index');
     Route::get('/about', AboutIndex::class)->name('about.index');
     Route::get('/car-model', CarModelIndex::class)->name('car-model.index');
-    Route::get('/car-model/edit/{id}', function($id) {
-       dd($id); 
-    });
+    Route::get('/car-model/edit/{id}', CarModelEdit::class)->name('car-model.edit');
 });
 
 Route::get('/car-model/json', [DatatablesController::class, 'carModelJson'])->name('datatable.car-model');

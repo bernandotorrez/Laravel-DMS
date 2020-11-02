@@ -49,4 +49,9 @@ class CarModelRepository extends BaseRepository implements CarModelRepositoryInt
     {
         return $this->model->find($id)->delete();
     }
+
+    public function paginate(int $int)
+    {
+        return $this->model->paginate($int);
+    }
 }
