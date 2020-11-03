@@ -13,13 +13,15 @@
     <link href="{{ asset('assets/css/plugins.css') }}" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/datatables.min.css') }}"/>
     <link href="{{ asset('assets/css/elements/custom-pagination.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('assets/css/components/custom-modal.css') }}" rel="stylesheet" type="text/css" />
+
     <link href="{{ mix('css/app.css') }}" rel="stylesheet" type="text/css" />
 
     @if(Request::is('login') || Request::is('logout'))
     <link href="{{ asset('assets/css/authentication/form-2.css') }}" rel="stylesheet" type="text/css" />
     @endif
     <!-- END GLOBAL MANDATORY STYLES -->
-    
+
     <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM STYLES -->
 
     <style>
@@ -52,26 +54,26 @@
     @if(Request::is('login') || Request::is('logout'))
     <script src="{{ asset('assets/js/authentication/form-2.js') }}" defer></script>
     @endif
-    
+
     <script>
         $(document).ready(function() {
             App.init();
         });
     </script>
     <script src="{{ asset('assets/js/custom.js') }}"></script>
-    
-    @stack('scripts')
     <!-- END GLOBAL MANDATORY SCRIPTS -->
 
     <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
     @livewireScripts
     <script src="https://cdn.jsdelivr.net/gh/livewire/turbolinks@v0.1.x/dist/livewire-turbolinks.js" data-turbolinks-eval="false"></script>
     <script src="{{ mix('js/app.js') }}"></script>
+
+    @stack('scripts')
     <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
-    
+
 </head>
 <body class="sidebar-noneoverflow">
-    
+
     <!--  BEGIN NAVBAR  -->
     @if(!Request::is('login') && !Request::is('logout'))
     @include('layouts.components.head_menu')
@@ -89,7 +91,7 @@
         @include('layouts.components.menu')
         @endif
         <!--  END TOPBAR  -->
-        
+
         <!--  BEGIN CONTENT AREA  -->
         <div id="content" class="main-content">
             <div class="layout-px-spacing">
@@ -105,7 +107,7 @@
             @include('layouts.components.footer')
             <!-- END FOOTER -->
 
-            
+
         </div>
         <!--  END CONTENT AREA  -->
 

@@ -7,16 +7,19 @@ use App\Repository\Eloquent\Repo\CarModelRepository;
 use App\Models\CarModel;
 use Illuminate\Support\Facades\Cache;
 use Livewire\WithPagination;
+use App\Traits\WithSorting;
 
 class CarModelIndex extends Component
 {
     // Pagination
     use WithPagination;
+    Use WithSorting;
+
     protected $paginationTheme = 'bootstrap';
     public array $perPage = [10, 15, 20, 25];
     public int $perPageSelected = 10;
     public $page = 1;
-    public string $sortBy = 'desc_model', $sortDirection = 'asc', $search = '';
+    public string $search = '';
     protected $queryString = [
         'search' => ['except' => ''],
         'page' => ['except' => 1]
@@ -29,10 +32,9 @@ class CarModelIndex extends Component
         'desc_model' => ''
     ];
     public bool $is_edit = false;
-    public int $id_checkbox = 0;
     public string $insert_status = '', $update_status = '', $delete_status = '';
     //public $car_model_data;
-    
+
     // Datatable
     public bool $allChecked = false;
     public array $checked = [];
@@ -52,6 +54,7 @@ class CarModelIndex extends Component
 
     public function mount()
     {
+        $this->sortBy = 'desc_model';
         $this->fill(request()->only('search', 'page'));
     }
 
@@ -97,11 +100,12 @@ class CarModelIndex extends Component
         $insert = $carModelRepository->create($data);
 
         if($insert) {
+            $this->emit('closeModal');
             $this->insert_status = 'success';
             $this->resetForm();
         } else {
             $this->insert_status = 'fail';
-        }
+        } 
     }
 
     public function showEditForm($data)
@@ -120,6 +124,7 @@ class CarModelIndex extends Component
         $update = $carModelRepository->update($this->id_model, $data);
 
         if($update) {
+            $this->emit('closeModal');
             $this->update_status = 'success';
             $this->is_edit = false;
             $this->resetForm();
@@ -140,17 +145,6 @@ class CarModelIndex extends Component
 
     }
 
-    public function sort($by)
-    {
-        $this->sortBy = $by;
-        
-        if($this->sortDirection == 'asc') {
-            $this->sortDirection = 'desc';
-        } else {
-            $this->sortDirection = 'asc';
-        }
-    }
-
     public function allChecked()
     {
         $datas = CarModel::select('id')->get();
@@ -160,13 +154,13 @@ class CarModelIndex extends Component
             foreach($datas as $data) {
                 if(!in_array(intval($data->id), $this->checked)) {
                     array_push($this->checked, intval($data->id));
-                }  
+                }
             }
         } else {
             // Checked ke Unchecked
             $this->checked = [];
         }
-        
+
     }
 
     public function uncheckAll($id)
@@ -174,11 +168,11 @@ class CarModelIndex extends Component
         if($this->allChecked) {
             $key = array_search($id, $this->checked);
             if ($key !== false) {
-                array_splice($this->checked, $key, 1);  
+                array_splice($this->checked, $key, 1);
             } else {
                 $this->checked = $this->checked;
             }
         }
-        
+
     }
 }
