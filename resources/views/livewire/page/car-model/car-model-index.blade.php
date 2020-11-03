@@ -67,10 +67,31 @@
                                 wire:model="allChecked" 
                                 wire:click="allChecked"> -->
                             </th>
-                            <th width="5%">ID</th>
+                            <th width="10%">
+                                <button class="btn btn-outline-info" wire:click="sort('id')">ID 
+                                    @if($sortBy != 'id')
+                                    <i class="fas fa-arrows-alt-v"></i>
+                                    @elseif($sortBy == 'id')
+                                        @if($sortDirection == 'asc')
+                                        <i class="fas fa-sort-alpha-up"></i>
+                                        @elseif($sortDirection == 'desc')
+                                        <i class="fas fa-sort-alpha-down-alt"></i>
+                                        @endif
+                                    @endif
+                                    </button>
+                            </th>
                             <th>
-                            <button class="btn btn-outline-info" wire:click="sort('desc_model')">Model Name <i class="fas fa-sort"></i></button>
-                                
+                                <button class="btn btn-outline-info" wire:click="sort('desc_model')">Model Name 
+                                    @if($sortBy != 'desc_model')
+                                    <i class="fas fa-arrows-alt-v"></i>
+                                    @elseif($sortBy == 'desc_model')
+                                        @if($sortDirection == 'asc')
+                                        <i class="fas fa-sort-alpha-up"></i>
+                                        @elseif($sortDirection == 'desc')
+                                        <i class="fas fa-sort-alpha-down-alt"></i>
+                                        @endif
+                                    @endif
+                                </button>
                             </th>
                         </thead>
                         <tbody>
@@ -91,7 +112,7 @@
                     </table>
 
                     <div class="d-flex justify-content-center">
-                        {{ $car_model_paginate->links() }}
+                        {{ $car_model_paginate->links('livewire.pagination-links') }}
                     </div>
                     
                 </div>

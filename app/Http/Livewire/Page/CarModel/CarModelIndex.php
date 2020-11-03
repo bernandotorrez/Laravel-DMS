@@ -5,8 +5,8 @@ namespace App\Http\Livewire\Page\CarModel;
 use Livewire\Component;
 use App\Repository\Eloquent\Repo\CarModelRepository;
 use App\Models\CarModel;
+use Illuminate\Support\Facades\Cache;
 use Livewire\WithPagination;
-use Livewire\WithSorting;
 
 class CarModelIndex extends Component
 {
@@ -16,18 +16,21 @@ class CarModelIndex extends Component
     public array $perPage = [10, 15, 20, 25];
     public int $perPageSelected = 10;
     public $page = 1;
-    public string $sortBy = 'desc_model', $sortDirection = 'asc';
-    // Pagination
-
-    protected string $pageTitle = "Car Model";
-    public $bindCarModel = [];
-    public bool $is_edit = false;
-    public int $id_checkbox = 0;
-    public string $insert_status = '', $update_status = '', $delete_status = '', $search = '';
+    public string $sortBy = 'desc_model', $sortDirection = 'asc', $search = '';
     protected $queryString = [
         'search' => ['except' => ''],
         'page' => ['except' => 1]
     ];
+    // Pagination
+
+    protected string $pageTitle = "Car Model";
+    public $bindCarModel = [
+        'id' => 0,
+        'desc_model' => ''
+    ];
+    public bool $is_edit = false;
+    public int $id_checkbox = 0;
+    public string $insert_status = '', $update_status = '', $delete_status = '';
     //public $car_model_data;
     
     // Datatable
@@ -50,8 +53,6 @@ class CarModelIndex extends Component
     public function mount()
     {
         $this->fill(request()->only('search', 'page'));
-        $this->bindCarModel['id'] = 0;
-        $this->bindCarModel['desc_model'] = '';
     }
 
     public function updated($propertyName)
@@ -66,9 +67,21 @@ class CarModelIndex extends Component
 
     public function render()
     {
+        // $cache_name = 'car-model-datatable-page-'.$this->page
+        // .'-perpage-'.$this->perPageSelected
+        // .'-search-'.$this->search
+        // .'-sortby-'.$this->sortBy
+        // .'-direction-'.$this->sortDirection;
+
+        // $car_model_paginate = Cache::remember($cache_name, 60, function () {
+        //     return CarModel::where('desc_model', 'like', '%'.$this->search.'%')
+        //     ->orderBy($this->sortBy, $this->sortDirection)
+        //     ->paginate($this->perPageSelected);
+        // });
+
         $car_model_paginate = CarModel::where('desc_model', 'like', '%'.$this->search.'%')
-        ->orderBy($this->sortBy, $this->sortDirection)
-        ->paginate($this->perPageSelected);
+            ->orderBy($this->sortBy, $this->sortDirection)
+            ->paginate($this->perPageSelected);
 
         return view('livewire.page.car-model.car-model-index', [
             'car_model_paginate' => $car_model_paginate
