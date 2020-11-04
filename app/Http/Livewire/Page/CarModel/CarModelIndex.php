@@ -19,9 +19,9 @@ class CarModelIndex extends Component
         'page' => ['except' => 1]
     ];
     
-    public $bindCarModel = [
-        'id' => 0,
-        'desc_model' => ''
+    public $bind = [
+        'id_model' => 0,
+        'model_name' => ''
     ];
 
     public bool $is_edit = false;
@@ -29,20 +29,20 @@ class CarModelIndex extends Component
 
     // Validation
     protected $rules = [
-        'bindCarModel.desc_model' => 'required|min:3|max:50'
+        'bind.model_name' => 'required|min:3|max:50'
     ];
 
     protected $messages = [
-        'bindCarModel.desc_model.required' => 'The Model Name Cant be Empty!',
-        'bindCarModel.desc_model.min' => 'The Model Name must be at least 3 Characters',
-        'bindCarModel.desc_model.max' => 'The Model Name Cant be maximal 50 Characters',
+        'bind.model_name.required' => 'The Model Name Cant be Empty!',
+        'bind.model_name.min' => 'The Model Name must be at least 3 Characters',
+        'bind.model_name.max' => 'The Model Name Cant be maximal 50 Characters',
     ];
     // Validation
 
 
    public function mount()
     {
-        $this->sortBy = 'desc_model';
+        $this->sortBy = 'model_name';
         $this->fill(request()->only('search', 'page'));
     }
 
@@ -53,12 +53,12 @@ class CarModelIndex extends Component
 
     public function resetForm()
     {
-        $this->reset(['bindCarModel']);
+        $this->reset(['bind']);
     }
 
     public function render()
     {
-        $car_model_paginate = CarModel::where('desc_model', 'like', '%'.$this->search.'%')
+        $car_model_paginate = CarModel::where('model_name', 'like', '%'.$this->search.'%')
             ->orderBy($this->sortBy, $this->sortDirection)
             ->paginate($this->perPageSelected);
 
@@ -81,7 +81,7 @@ class CarModelIndex extends Component
     {
         $this->validate();
 
-        $data = array('desc_model' => ucfirst($this->bindCarModel['desc_model']));
+        $data = array('model_name' => ucfirst($this->bind['model_name']));
 
         $insert = $carModelRepository->create($data);
 
@@ -94,15 +94,15 @@ class CarModelIndex extends Component
         } 
     }
 
-    public function showEditForm()
+    public function showEditForm(CarModelRepository $carModelRepository)
     {
         $this->insert_status = '';
         $this->update_status = '';
         $this->is_edit = true;
-
-        $data = CarModel::where('id', $this->checked[0])->first();
-        $this->bindCarModel['id'] = $data->id;
-        $this->bindCarModel['desc_model'] = $data->desc_model;
+       
+        $data = $carModelRepository->getByID($this->checked[0]);
+        $this->bind['id_model'] = $data->id_model;
+        $this->bind['model_name'] = $data->model_name;
 
         $this->emit('openModal');
     }
@@ -111,9 +111,9 @@ class CarModelIndex extends Component
     {
         $this->validate();
 
-        $data = array('desc_model' => ucfirst($this->bindCarModel['desc_model']));
-
-        $update = $carModelRepository->update($this->bindCarModel['id'], $data);
+        $data = array('model_name' => ucfirst($this->bind['model_name']));
+        
+        $update = $carModelRepository->update($this->bind['id_model'], $data);
 
         if($update) {
             $this->update_status = 'success';

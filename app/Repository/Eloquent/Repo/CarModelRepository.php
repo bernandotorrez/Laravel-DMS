@@ -9,7 +9,7 @@ use Illuminate\Support\Collection;
 
 class CarModelRepository extends BaseRepository implements CarModelRepositoryInterface
 {
-
+    protected $primaryKey = 'id_model';
      /**
     * UserRepository constructor.
     *
@@ -37,7 +37,7 @@ class CarModelRepository extends BaseRepository implements CarModelRepositoryInt
      */
     public function update(int $id, array $attributes): int
     {
-        return $this->model->where('id', $id)->update($attributes);
+        return $this->model->where($this->primaryKey, $id)->update($attributes);
     }
 
     /**
@@ -52,11 +52,16 @@ class CarModelRepository extends BaseRepository implements CarModelRepositoryInt
 
     public function massDelete(array $arrayId): int
     {
-        return $this->model->whereIn('id', $arrayId)->delete();
+        return $this->model->whereIn($this->primaryKey, $arrayId)->delete();
     }
 
     public function paginate(int $int)
     {
         return $this->model->paginate($int);
+    }
+
+    public function getByID($id): CarModel
+    {
+        return $this->model->where($this->primaryKey, $id)->first();
     }
 }

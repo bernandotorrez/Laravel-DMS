@@ -12,6 +12,6 @@ class CarModel extends Model
     use SoftDeletes;
 
     protected $table = 'tbl_model_porsche';
-    protected $fillable = ['desc_model'];
+    protected $fillable = ['model_name'];
     //public $incrementing = false;
 }

@@ -68,8 +68,8 @@
                                     <div class="form-group mb-4">
                                         <label for="model_name">Model Name</label>
                                         <input type="text" class="form-control" id="model_name" maxlength="50"
-                                            placeholder="Example : Porsche" wire:model="bindCarModel.desc_model">
-                                        @error('bindCarModel.desc_model') <span class="error">{{ $message }}</span>
+                                            placeholder="Example : Porsche" wire:model="bind.model_name">
+                                        @error('bind.model_name') <span class="error">{{ $message }}</span>
                                         @enderror
                                     </div>
 
@@ -117,7 +117,7 @@
                                 wire:model="allChecked"
                                 wire:click="allChecked">
                             </th>
-                            <th width="10%" wire:click="sortBy('id')">
+                            <th width="10%" wire:click="sortBy('id_model')">
                                 <a href="javascript:void(0);">ID
                                     @if($sortBy != 'id')
                                     <i class="fas fa-arrows-alt-v"></i>
@@ -130,11 +130,11 @@
                                     @endif
                                 </a>
                             </th>
-                            <th wire:click="sortBy('desc_model')">
+                            <th wire:click="sortBy('model_name')">
                                 <a href="javascript:void(0);">Model Name
-                                    @if($sortBy != 'desc_model')
+                                    @if($sortBy != 'model_name')
                                     <i class="fas fa-arrows-alt-v"></i>
-                                    @elseif($sortBy == 'desc_model')
+                                    @elseif($sortBy == 'model_name')
                                     @if($sortDirection == 'asc')
                                     <i class="fas fa-sort-alpha-up"></i>
                                     @elseif($sortDirection == 'desc')
@@ -149,12 +149,12 @@
                             <tr>
                                 <td>
                                     <input type="checkbox" 
-                                    value="{{ $data->id }}" 
+                                    value="{{ $data->id_model }}" 
                                     class="new-control-input"
                                     wire:model="checked">
                                 </td>
-                                <td>{{ $data->id }}</td>
-                                <td>{{ $data->desc_model }}</td>
+                                <td>{{ $data->id_model }}</td>
+                                <td>{{ $data->model_name }}</td>
                             </tr>
                             @endforeach
                         </tbody>
