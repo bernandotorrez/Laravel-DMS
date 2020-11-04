@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\CarTypeModel;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\CarModel;
 
 class CarTypeModelFactory extends Factory
 {
@@ -22,7 +23,8 @@ class CarTypeModelFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'id_model' => CarModel::factory(),
+            'type_model_name' => $this->faker->name()
         ];
     }
 }

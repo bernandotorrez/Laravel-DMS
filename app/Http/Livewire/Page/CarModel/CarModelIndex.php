@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Page\CarModel;
 use Livewire\Component;
 use App\Repository\Eloquent\Repo\CarModelRepository;
 use App\Models\CarModel;
+use App\Models\CarTypeModel;
 use Illuminate\Support\Facades\Cache;
 use App\Traits\WithDatatable;
 

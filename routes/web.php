@@ -9,6 +9,8 @@ use App\Http\Livewire\Page\CarModel\CarModelIndex;
 use App\Http\Livewire\Page\CarModel\CarModelEdit;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\DatatablesController;
+use App\Models\CarTypeModel;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -37,6 +39,18 @@ Route::middleware('auth')->group(function() {
     Route::get('/about', AboutIndex::class)->name('about.index');
     Route::get('/car-model', CarModelIndex::class)->name('car-model.index');
     Route::get('/car-model/edit/{id}', CarModelEdit::class)->name('car-model.edit');
+
+    Route::get('/tes', function() {
+        $data = CarTypeModel::with('model')->get();
+        
+        foreach($data as $x) {
+            echo 'ID Model : '.$x->model->id_model;
+            echo ' ID Type Model : '.$x->id_type_model;
+            echo ' Model Name : '.$x->model->model_name;
+            echo ' Type Model Name : '.$x->type_model_name;
+            echo '<br>';
+        }
+    });
 });
 
 Route::get('/car-model/json', [DatatablesController::class, 'carModelJson'])->name('datatable.car-model');
