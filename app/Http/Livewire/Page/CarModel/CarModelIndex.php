@@ -6,38 +6,26 @@ use Livewire\Component;
 use App\Repository\Eloquent\Repo\CarModelRepository;
 use App\Models\CarModel;
 use Illuminate\Support\Facades\Cache;
-use Livewire\WithPagination;
-use App\Traits\WithSorting;
+use App\Traits\WithDatatable;
 
 class CarModelIndex extends Component
 {
-    // Pagination
-    use WithPagination;
-    Use WithSorting;
+    Use WithDatatable;
 
-    protected $paginationTheme = 'bootstrap';
-    public array $perPage = [10, 15, 20, 25, 50];
-    public int $perPageSelected = 10;
-    public string $search = '';
+    protected string $pageTitle = "Car Model";
+    
     protected $queryString = [
         'search' => ['except' => ''],
         'page' => ['except' => 1]
     ];
-    // Pagination
-
-    protected string $pageTitle = "Car Model";
+    
     public $bindCarModel = [
         'id' => 0,
         'desc_model' => ''
     ];
+
     public bool $is_edit = false;
     public string $insert_status = '', $update_status = '', $delete_status = '';
-    //public $car_model_data;
-
-    // Datatable
-    public bool $allChecked = false;
-    public array $checked = [];
-    // Datatable
 
     // Validation
     protected $rules = [
@@ -132,29 +120,10 @@ class CarModelIndex extends Component
         }
         
         if($delete) {
+            $this->allChecked = false;
             $this->delete_status = 'success';
         } else {
             $this->delete_status = 'fail';
-        }
-
-    }
-
-    public function allChecked()
-    {
-        $datas = CarModel::select('id')->where('desc_model', 'like', '%'.$this->search.'%')
-        ->orderBy($this->sortBy, $this->sortDirection)
-        ->paginate($this->perPageSelected);
-      
-        // Dari Unchecked ke Checked
-        if($this->allChecked == true) {
-            foreach($datas as $data) {
-                if(!in_array($data->id, $this->checked)) {
-                    array_push($this->checked, (string) $data->id);
-                }
-            }
-        } else {
-            // Checked ke Unchecked
-            $this->checked = [];
         }
 
     }
