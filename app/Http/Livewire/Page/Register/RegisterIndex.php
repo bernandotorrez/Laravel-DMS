@@ -36,7 +36,7 @@ class RegisterIndex extends Component
     public function render()
     {   
         $data = array('title' => $this->pageTitle);
-        return view('livewire.page.register.register-index')->layout('login_layouts.app', $data);
+        return view('livewire.page.register.register-index')->layout('layouts.app', $data);
     }
 
     public function mount() {

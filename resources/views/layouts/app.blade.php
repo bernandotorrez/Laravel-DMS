@@ -17,7 +17,7 @@
 
     <link href="{{ mix('css/app.css') }}" rel="stylesheet" type="text/css" />
 
-    @if(Request::is('login') || Request::is('logout'))
+    @if(Request::is('login') || Request::is('logout') || Request::is('register'))
     <link href="{{ asset('assets/css/authentication/form-2.css') }}" rel="stylesheet" type="text/css" />
     @endif
     <!-- END GLOBAL MANDATORY STYLES -->
@@ -48,17 +48,11 @@
     <script src="{{ asset('bootstrap/js/popper.min.js') }}"></script>
     <script src="{{ asset('bootstrap/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('plugins/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
-    <script src="{{ asset('assets/js/app.js') }}"></script>
 
-    @if(Request::is('login') || Request::is('logout'))
+    @if(Request::is('login') || Request::is('logout') || Request::is('register'))
     <script src="{{ asset('assets/js/authentication/form-2.js') }}" defer></script>
     @endif
 
-    <script>
-        $(document).ready(function() {
-            App.init();
-        });
-    </script>
     <script src="{{ asset('assets/js/custom.js') }}"></script>
     <!-- END GLOBAL MANDATORY SCRIPTS -->
 
@@ -74,7 +68,7 @@
 <body class="sidebar-noneoverflow">
 
     <!--  BEGIN NAVBAR  -->
-    @if(!Request::is('login') && !Request::is('logout'))
+    @if(!Request::is('login') && !Request::is('logout') && !Request::is('register'))
     @include('layouts.components.head_menu')
     @endif
     <!--  END NAVBAR  -->
@@ -86,7 +80,7 @@
         <div class="search-overlay"></div>
 
         <!--  BEGIN TOPBAR  -->
-        @if(!Request::is('login') && !Request::is('logout'))
+        @if(!Request::is('login') && !Request::is('logout') && !Request::is('register'))
         @include('layouts.components.menu')
         @endif
         <!--  END TOPBAR  -->

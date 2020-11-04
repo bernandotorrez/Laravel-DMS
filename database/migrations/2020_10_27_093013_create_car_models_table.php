@@ -14,8 +14,8 @@ class CreateCarModelsTable extends Migration
     public function up()
     {
         Schema::create('tbl_model_porsche', function (Blueprint $table) {
-            $table->id();
-            $table->string('desc_model', 50);
+            $table->bigIncrements('id_model');
+            $table->string('model_name', 50);
             $table->softDeletes();
             $table->timestamps();
         });
