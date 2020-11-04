@@ -68,7 +68,7 @@
                                     <div class="form-group mb-4">
                                         <label for="model_name">Model Name</label>
                                         <input type="text" class="form-control" id="model_name" maxlength="50"
-                                            placeholder="Example : Porsche" wire:model="bind.model_name">
+                                            placeholder="Example : Porsche" wire:model.debounce.500ms="bind.model_name">
                                         @error('bind.model_name') <span class="error">{{ $message }}</span>
                                         @enderror
                                     </div>
@@ -80,10 +80,10 @@
                                     Discard</button>
                                 @if($is_edit)
                                 <button type="button" class="btn btn-success" id="update"
-                                    wire:click.prevent="editProcess"> Update </button>
+                                    wire:click.prevent="editProcess" wire:offline.attr="disabled"> Update </button>
                                 @else
                                 <button type="button" class="btn btn-primary" id="submit"
-                                    wire:click.prevent="addProcess"> Submit </button>
+                                    wire:click.prevent="addProcess" wire:offline.attr="disabled"> Submit </button>
                                 @endif
                             </div>
                         </div>

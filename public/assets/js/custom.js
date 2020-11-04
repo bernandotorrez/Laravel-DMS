@@ -22,18 +22,6 @@ $('.navbar .dropdown.notification-dropdown > .dropdown-menu, .navbar .dropdown.m
 =========================================
 */
 
-function checkall(clickchk, relChkbox) {
-
-    var checker = $('#' + clickchk);
-    var multichk = $('.' + relChkbox);
-
-
-    checker.click(function () {
-        multichk.prop('checked', $(this).prop('checked'));
-    });    
-}
-
-
 /*
 =========================================
 |                                       |

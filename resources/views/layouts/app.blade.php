@@ -47,13 +47,12 @@
     <script src="{{ asset('assets/js/libs/jquery-3.1.1.min.js') }}"></script>
     <script src="{{ asset('bootstrap/js/popper.min.js') }}"></script>
     <script src="{{ asset('bootstrap/js/bootstrap.min.js') }}"></script>
-    <script src="{{ asset('plugins/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
 
-    @if(Request::is('login') || Request::is('logout') || Request::is('register'))
+    <!-- @if(Request::is('login') || Request::is('logout') || Request::is('register'))
     <script src="{{ asset('assets/js/authentication/form-2.js') }}" defer></script>
-    @endif
+    @endif -->
 
-    <script src="{{ asset('assets/js/custom.js') }}"></script>
+    <!-- <script src="{{ asset('assets/js/custom.js') }}"></script> -->
     <!-- END GLOBAL MANDATORY SCRIPTS -->
 
     <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
