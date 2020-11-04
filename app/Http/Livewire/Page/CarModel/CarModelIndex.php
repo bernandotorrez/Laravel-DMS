@@ -16,9 +16,8 @@ class CarModelIndex extends Component
     Use WithSorting;
 
     protected $paginationTheme = 'bootstrap';
-    public array $perPage = [10, 15, 20, 25];
+    public array $perPage = [10, 15, 20, 25, 50];
     public int $perPageSelected = 10;
-    public $page = 1;
     public string $search = '';
     protected $queryString = [
         'search' => ['except' => ''],
@@ -52,7 +51,8 @@ class CarModelIndex extends Component
     ];
     // Validation
 
-    public function mount()
+
+   public function mount()
     {
         $this->sortBy = 'desc_model';
         $this->fill(request()->only('search', 'page'));
@@ -70,18 +70,6 @@ class CarModelIndex extends Component
 
     public function render()
     {
-        // $cache_name = 'car-model-datatable-page-'.$this->page
-        // .'-perpage-'.$this->perPageSelected
-        // .'-search-'.$this->search
-        // .'-sortby-'.$this->sortBy
-        // .'-direction-'.$this->sortDirection;
-
-        // $car_model_paginate = Cache::remember($cache_name, 60, function () {
-        //     return CarModel::where('desc_model', 'like', '%'.$this->search.'%')
-        //     ->orderBy($this->sortBy, $this->sortDirection)
-        //     ->paginate($this->perPageSelected);
-        // });
-
         $car_model_paginate = CarModel::where('desc_model', 'like', '%'.$this->search.'%')
             ->orderBy($this->sortBy, $this->sortDirection)
             ->paginate($this->perPageSelected);
@@ -100,19 +88,23 @@ class CarModelIndex extends Component
         $insert = $carModelRepository->create($data);
 
         if($insert) {
-            $this->emit('closeModal');
             $this->insert_status = 'success';
             $this->resetForm();
+            $this->emit('closeModal');
         } else {
             $this->insert_status = 'fail';
         } 
     }
 
-    public function showEditForm($data)
+    public function showEditForm()
     {
         $this->is_edit = true;
-        $this->bindCarModel['id'] = $data['id'];
-        $this->bindCarModel['desc_model'] = $data['desc_model'];
+
+        $data = CarModel::where('id', $this->checked[0])->first();
+        $this->bindCarModel['id'] = $data->id;
+        $this->bindCarModel['desc_model'] = $data->desc_model;
+
+        $this->emit('openUpdateModal', $this->bindCarModel);
     }
 
     public function editCarModel(CarModelRepository $carModelRepository)
@@ -121,22 +113,24 @@ class CarModelIndex extends Component
 
         $data = array('desc_model' => ucfirst($this->bindCarModel['desc_model']));
 
-        $update = $carModelRepository->update($this->id_model, $data);
+        $update = $carModelRepository->update($this->bindCarModel['id'], $data);
 
         if($update) {
-            $this->emit('closeModal');
             $this->update_status = 'success';
             $this->is_edit = false;
             $this->resetForm();
+            $this->emit('closeModal');
         } else {
             $this->update_status = 'fail';
         }
     }
 
-    public function deleteCarModel($id, CarModelRepository $carModelRepository)
+    public function deleteCarModel(CarModelRepository $carModelRepository)
     {
-        $delete = $carModelRepository->delete($id);
-
+        foreach($this->checked as $id) {
+            $delete = $carModelRepository->delete($id);
+        }
+        
         if($delete) {
             $this->delete_status = 'success';
         } else {
@@ -147,31 +141,20 @@ class CarModelIndex extends Component
 
     public function allChecked()
     {
-        $datas = CarModel::select('id')->get();
-
+        $datas = CarModel::select('id')->where('desc_model', 'like', '%'.$this->search.'%')
+        ->orderBy($this->sortBy, $this->sortDirection)
+        ->paginate($this->perPageSelected);
+      
         // Dari Unchecked ke Checked
         if($this->allChecked == true) {
             foreach($datas as $data) {
-                if(!in_array(intval($data->id), $this->checked)) {
-                    array_push($this->checked, intval($data->id));
+                if(!in_array($data->id, $this->checked)) {
+                    array_push($this->checked, (string) $data->id);
                 }
             }
         } else {
             // Checked ke Unchecked
             $this->checked = [];
-        }
-
-    }
-
-    public function uncheckAll($id)
-    {
-        if($this->allChecked) {
-            $key = array_search($id, $this->checked);
-            if ($key !== false) {
-                array_splice($this->checked, $key, 1);
-            } else {
-                $this->checked = $this->checked;
-            }
         }
 
     }

@@ -4,15 +4,32 @@
         <div class="widget-content-area br-4">
             <div class="widget-one">
 
-                <button type="button" class="btn btn-primary" wire:click.prevent="$emit('openModal')"> Add
+                @if($delete_status == 'success')
+                <div class="alert alert-success"> Delete Success! </div>
+                @elseif($delete_status == 'fail')
+                <div class="alert alert-danger"> Delete Failed! </div>
+                @endif
+
+                <button type="button" 
+                class="btn btn-primary" 
+                wire:click.prevent="$emit('openModal')"> Add
                 </button>
 
                 <button type="button" 
                 class="btn btn-success" 
-                wire:click.prevent="$emit('openUpdateModal')"
+                wire:click.prevent="showEditForm"
                 @if(count($checked) != 1) disabled @endif
                 > Edit
                 </button>
+
+                <button type="button" 
+                class="btn btn-danger" 
+                wire:click.prevent="deleteCarModel"
+                @if(count($checked) <= 0 ) disabled @endif
+                > Delete
+                </button>
+
+                <!-- @dump($checked) -->
 
                 <!-- Modal -->
                 <div wire:ignore.self class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
@@ -46,12 +63,6 @@
                                     <div class="alert alert-success"> Update Success! </div>
                                     @elseif($update_status == 'fail')
                                     <div class="alert alert-danger"> Update Failed! </div>
-                                    @endif
-
-                                    @if($delete_status == 'success')
-                                    <div class="alert alert-success"> Delete Success! </div>
-                                    @elseif($delete_status == 'fail')
-                                    <div class="alert alert-danger"> Delete Failed! </div>
                                     @endif
 
                                     <div class="form-group mb-4">
@@ -101,10 +112,10 @@
                     <table class="table table-striped table-bordered" id="users-table">
                         <thead>
                             <th width="5%">
-                                <!-- <input type="checkbox"
+                                <input type="checkbox"
                                 class="new-control-input"
                                 wire:model="allChecked"
-                                wire:click="allChecked"> -->
+                                wire:click="allChecked">
                             </th>
                             <th width="10%" wire:click="sortBy('id')">
                                 <a href="javascript:void(0);">ID
@@ -137,8 +148,10 @@
                             @foreach($car_model_paginate as $data)
                             <tr>
                                 <td>
-                                    <input type="checkbox" value="{{ $data->id }}" class="new-control-input"
-                                        wire:model="checked" @if(in_array($data->id, $checked)) checked @endif>
+                                    <input type="checkbox" 
+                                    value="{{ $data->id }}" 
+                                    class="new-control-input"
+                                    wire:model="checked">
                                 </td>
                                 <td>{{ $data->id }}</td>
                                 <td>{{ $data->desc_model }}</td>
@@ -167,10 +180,14 @@ Livewire.on('closeModal', function() {
 
 Livewire.on('openModal', function() {
     @this.insert_status = false
+    @this.update_status = false
+    @this.is_edit = false
+    @this.resetForm()
     $('#exampleModal').modal('show')
 })
 
 Livewire.on('openUpdateModal', function() {
+    @this.insert_status = false
     @this.update_status = false
     $('#exampleModal').modal('show')
 })
