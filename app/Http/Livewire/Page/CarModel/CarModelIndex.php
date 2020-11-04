@@ -77,7 +77,7 @@ class CarModelIndex extends Component
         $this->emit('openModal');
     }
 
-    public function addCarModel(CarModelRepository $carModelRepository)
+    public function addProcess(CarModelRepository $carModelRepository)
     {
         $this->validate();
 
@@ -94,7 +94,7 @@ class CarModelIndex extends Component
         } 
     }
 
-    public function showEditForm(CarModelRepository $carModelRepository)
+    public function editForm(CarModelRepository $carModelRepository)
     {
         $this->insert_status = '';
         $this->update_status = '';
@@ -107,7 +107,7 @@ class CarModelIndex extends Component
         $this->emit('openModal');
     }
 
-    public function editCarModel(CarModelRepository $carModelRepository)
+    public function editProcess(CarModelRepository $carModelRepository)
     {
         $this->validate();
 
@@ -125,7 +125,7 @@ class CarModelIndex extends Component
         }
     }
 
-    public function deleteCarModel(CarModelRepository $carModelRepository)
+    public function deleteProcess(CarModelRepository $carModelRepository)
     {
         $delete = $carModelRepository->massDelete($this->checked);
 

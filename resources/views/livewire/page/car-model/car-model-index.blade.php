@@ -17,14 +17,14 @@
 
                 <button type="button" 
                 class="btn btn-success mr-4" 
-                wire:click.prevent="showEditForm"
+                wire:click.prevent="editForm"
                 @if(count($checked) != 1) disabled @endif
                 > Edit
                 </button>
 
                 <button type="button" 
                 class="btn btn-danger" 
-                wire:click.prevent="deleteCarModel"
+                wire:click.prevent="deleteProcess"
                 @if(count($checked) <= 0 ) disabled @endif
                 > Delete
                 </button>
@@ -80,10 +80,10 @@
                                     Discard</button>
                                 @if($is_edit)
                                 <button type="button" class="btn btn-success" id="update"
-                                    wire:click.prevent="editCarModel"> Update </button>
+                                    wire:click.prevent="editProcess"> Update </button>
                                 @else
                                 <button type="button" class="btn btn-primary" id="submit"
-                                    wire:click.prevent="addCarModel"> Submit </button>
+                                    wire:click.prevent="addProcess"> Submit </button>
                                 @endif
                             </div>
                         </div>
@@ -122,11 +122,11 @@
                                     @if($sortBy != 'id')
                                     <i class="fas fa-arrows-alt-v"></i>
                                     @elseif($sortBy == 'id')
-                                    @if($sortDirection == 'asc')
-                                    <i class="fas fa-sort-alpha-up"></i>
-                                    @elseif($sortDirection == 'desc')
-                                    <i class="fas fa-sort-alpha-down-alt"></i>
-                                    @endif
+                                        @if($sortDirection == 'asc')
+                                        <i class="fas fa-sort-alpha-up"></i>
+                                        @elseif($sortDirection == 'desc')
+                                        <i class="fas fa-sort-alpha-down-alt"></i>
+                                        @endif
                                     @endif
                                 </a>
                             </th>
@@ -135,11 +135,11 @@
                                     @if($sortBy != 'model_name')
                                     <i class="fas fa-arrows-alt-v"></i>
                                     @elseif($sortBy == 'model_name')
-                                    @if($sortDirection == 'asc')
-                                    <i class="fas fa-sort-alpha-up"></i>
-                                    @elseif($sortDirection == 'desc')
-                                    <i class="fas fa-sort-alpha-down-alt"></i>
-                                    @endif
+                                        @if($sortDirection == 'asc')
+                                        <i class="fas fa-sort-alpha-up"></i>
+                                        @elseif($sortDirection == 'desc')
+                                        <i class="fas fa-sort-alpha-down-alt"></i>
+                                        @endif
                                     @endif
                                 </a>
                             </th>
