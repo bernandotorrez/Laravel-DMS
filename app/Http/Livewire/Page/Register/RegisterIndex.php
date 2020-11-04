@@ -3,7 +3,7 @@
 namespace App\Http\Livewire\Page\Register;
 
 use Livewire\Component;
-use App\Repository\Eloquent\UserRepository;
+use App\Repository\Eloquent\Repo\UserRepository;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 

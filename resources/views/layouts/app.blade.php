@@ -49,7 +49,6 @@
     <script src="{{ asset('bootstrap/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('plugins/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
     <script src="{{ asset('assets/js/app.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/js/datatables.min.js') }}"></script>
 
     @if(Request::is('login') || Request::is('logout'))
     <script src="{{ asset('assets/js/authentication/form-2.js') }}" defer></script>

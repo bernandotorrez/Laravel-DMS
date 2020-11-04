@@ -12,7 +12,7 @@
 
                 <button type="button" 
                 class="btn btn-primary mr-4" 
-                wire:click.prevent="$emit('openModal')"> Add
+                wire:click.prevent="addForm"> Add
                 </button>
 
                 <button type="button" 
@@ -179,16 +179,6 @@ Livewire.on('closeModal', function() {
 })
 
 Livewire.on('openModal', function() {
-    @this.insert_status = false
-    @this.update_status = false
-    @this.is_edit = false
-    @this.resetForm()
-    $('#exampleModal').modal('show')
-})
-
-Livewire.on('openUpdateModal', function() {
-    @this.insert_status = false
-    @this.update_status = false
     $('#exampleModal').modal('show')
 })
 </script>

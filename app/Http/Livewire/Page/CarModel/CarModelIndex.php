@@ -67,6 +67,16 @@ class CarModelIndex extends Component
         ])->layout('layouts.app', array('title' => $this->pageTitle));
     }
 
+    public function addForm()
+    {
+        $this->insert_status = '';
+        $this->update_status = '';
+        $this->is_edit = false;
+        $this->resetForm();
+
+        $this->emit('openModal');
+    }
+
     public function addCarModel(CarModelRepository $carModelRepository)
     {
         $this->validate();
@@ -86,13 +96,15 @@ class CarModelIndex extends Component
 
     public function showEditForm()
     {
+        $this->insert_status = '';
+        $this->update_status = '';
         $this->is_edit = true;
 
         $data = CarModel::where('id', $this->checked[0])->first();
         $this->bindCarModel['id'] = $data->id;
         $this->bindCarModel['desc_model'] = $data->desc_model;
 
-        $this->emit('openUpdateModal', $this->bindCarModel);
+        $this->emit('openModal');
     }
 
     public function editCarModel(CarModelRepository $carModelRepository)
