@@ -115,12 +115,11 @@ class CarModelIndex extends Component
 
     public function deleteCarModel(CarModelRepository $carModelRepository)
     {
-        foreach($this->checked as $id) {
-            $delete = $carModelRepository->delete($id);
-        }
-        
+        $delete = $carModelRepository->massDelete($this->checked);
+
         if($delete) {
             $this->allChecked = false;
+            $this->checked = [];
             $this->delete_status = 'success';
         } else {
             $this->delete_status = 'fail';

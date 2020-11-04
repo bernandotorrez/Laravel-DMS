@@ -11,12 +11,12 @@
                 @endif
 
                 <button type="button" 
-                class="btn btn-primary" 
+                class="btn btn-primary mr-4" 
                 wire:click.prevent="$emit('openModal')"> Add
                 </button>
 
                 <button type="button" 
-                class="btn btn-success" 
+                class="btn btn-success mr-4" 
                 wire:click.prevent="showEditForm"
                 @if(count($checked) != 1) disabled @endif
                 > Edit
