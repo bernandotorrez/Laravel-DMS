@@ -66,6 +66,7 @@ class CarTypeModelIndex extends Component
     {
         $car_type_model = $carTypeModelRepository->datatablePaginationWithRelation(
             'type_model_name',
+            ['model_name'],
             $this->search,
             $this->sortBy,
             $this->sortDirection,
@@ -87,6 +88,9 @@ class CarTypeModelIndex extends Component
         $id = (new CarTypeModel)->getKeyName();
 
         $datas = CarTypeModel::select($id)->where($this->sortBy, 'like', '%'.$this->search.'%')
+        ->orWhereHas('oneModel', function($query) {
+            $query->where('model_name', 'like', '%'.$this->search.'%');
+        })
         ->orderBy($this->sortBy, $this->sortDirection)
         ->paginate($this->perPageSelected);
       

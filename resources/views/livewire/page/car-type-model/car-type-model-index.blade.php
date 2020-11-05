@@ -130,11 +130,11 @@
                                 wire:click="allChecked">
                             </th>
                             <th width="10%">No</th>
-                            <th wire:click="sortBy('model_name')">
+                            <th wire:click="sortBy('id_model')">
                                 <a href="javascript:void(0);">Model Name
-                                    @if($sortBy != 'model_name')
+                                    @if($sortBy != 'id_model')
                                     <i class="fas fa-arrows-alt-v"></i>
-                                    @elseif($sortBy == 'model_name')
+                                    @elseif($sortBy == 'id_model')
                                         @if($sortDirection == 'asc')
                                         <i class="fas fa-sort-alpha-up"></i>
                                         @elseif($sortDirection == 'desc')

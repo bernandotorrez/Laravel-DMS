@@ -93,6 +93,7 @@ class CRUDRepository implements EloquentRepositoryInterface
 
     public function datatablePaginationWithRelation(
         $where, 
+        $arrayWhereParent,
         $search, 
         $sortBy, 
         $sortDirection, 
@@ -100,7 +101,13 @@ class CRUDRepository implements EloquentRepositoryInterface
         $relation)
     {
 
-        return $this->model->with($relation)->where($where, 'like', '%'.$search.'%')
+        return $this->model->with($relation)
+            ->where($where, 'like', '%'.$search.'%')
+            ->orWhereHas($relation, function($query) use ($arrayWhereParent, $search) {
+                foreach($arrayWhereParent as $whereParent) {
+                    $query->where($whereParent, 'like', '%'.$search.'%');
+                }
+            })
             ->orderBy($sortBy, $sortDirection)
             ->paginate($perPageSelected);
     }
