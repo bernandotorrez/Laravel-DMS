@@ -6,6 +6,7 @@ use App\Models\CarTypeModel;
 use App\Repository\Eloquent\Repo\CarModelRepository;
 use App\Repository\Eloquent\Repo\CarTypeModelRepository;
 use App\Traits\WithDatatable;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class CarTypeModelIndex extends Component
@@ -60,19 +61,23 @@ class CarTypeModelIndex extends Component
     }
 
     public function render(
-        CarTypeModelRepository $carTypeModelRepository,
         CarModelRepository $carModelRepository
         )
     {
-        $car_type_model = $carTypeModelRepository->datatablePaginationWithRelation(
-            'type_model_name',
-            ['model_name'],
-            $this->search,
-            $this->sortBy,
-            $this->sortDirection,
-            $this->perPageSelected,
-            'oneModel'
-        );
+        // $car_type_model = $carTypeModelRepository->datatablePaginationWithRelation(
+        //     'type_model_name',
+        //     ['model_name'],
+        //     $this->search,
+        //     $this->sortBy,
+        //     $this->sortDirection,
+        //     $this->perPageSelected,
+        //     'oneModel'
+        // );
+
+        $car_type_model = DB::table('view_type_model_porsche')
+        ->where($this->sortBy, 'like', '%'.$this->search.'%')
+        ->orderBy($this->sortBy, $this->sortDirection)
+        ->paginate($this->perPageSelected);
 
         $car_model = $carModelRepository->getAllData();
 
@@ -87,10 +92,9 @@ class CarTypeModelIndex extends Component
     {
         $id = (new CarTypeModel)->getKeyName();
 
-        $datas = CarTypeModel::select($id)->where($this->sortBy, 'like', '%'.$this->search.'%')
-        ->orWhereHas('oneModel', function($query) {
-            $query->where('model_name', 'like', '%'.$this->search.'%');
-        })
+        $datas = DB::table('view_type_model_porsche')
+        ->select($id)
+        ->where($this->sortBy, 'like', '%'.$this->search.'%')
         ->orderBy($this->sortBy, $this->sortDirection)
         ->paginate($this->perPageSelected);
       

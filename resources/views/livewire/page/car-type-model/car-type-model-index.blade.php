@@ -37,7 +37,7 @@
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                <h5 class="modal-title" id="exampleModalLabel">Car Type Model</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                         viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -48,7 +48,6 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <h6 class="mb-4">Car Model</h6>
 
                                 <p class=""></p>
 
@@ -167,7 +166,7 @@
                                     wire:model="checked">
                                 </td>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $data->oneModel->model_name }}</td>
+                                <td>{{ $data->model_name }}</td>
                                 <td>{{ $data->type_model_name }}</td>
                             </tr>
                             @endforeach
