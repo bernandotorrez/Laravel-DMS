@@ -7,21 +7,5 @@ use Illuminate\Support\Collection;
 
 interface CarModelRepositoryInterface
 {
-    public function all(): Collection;
-
-    /**
-     * @param $id
-     * 
-     * @param array $attributes
-     * 
-     * @return Collection 
-     */
-    public function update(int $id, array $attributes): int;
-
-    /**
-     * @param $id
-     * 
-     * @return Collection 
-     */
-    public function delete(int $id): int;
+    
 }
