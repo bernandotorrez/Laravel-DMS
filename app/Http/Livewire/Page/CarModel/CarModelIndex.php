@@ -5,8 +5,7 @@ namespace App\Http\Livewire\Page\CarModel;
 use Livewire\Component;
 use App\Repository\Eloquent\Repo\CarModelRepository;
 use App\Models\CarModel;
-use App\Models\CarTypeModel;
-use Illuminate\Support\Facades\Cache;
+use App\Repository\Eloquent\Repo\CarTypeModelRepository;
 use App\Traits\WithDatatable;
 
 class CarModelIndex extends Component
@@ -14,6 +13,9 @@ class CarModelIndex extends Component
     Use WithDatatable;
 
     protected string $pageTitle = "Car Model";
+    public bool $is_edit = false, $allChecked = false;
+    public string $insert_status = '', $update_status = '', $delete_status = '';
+    public array $checked = [];
     
     protected $queryString = [
         'search' => ['except' => ''],
@@ -24,9 +26,6 @@ class CarModelIndex extends Component
         'id_model' => 0,
         'model_name' => ''
     ];
-
-    public bool $is_edit = false;
-    public string $insert_status = '', $update_status = '', $delete_status = '';
 
     // Validation
     protected $rules = [
@@ -41,7 +40,7 @@ class CarModelIndex extends Component
     // Validation
 
 
-   public function mount()
+    public function mount()
     {
         $this->sortBy = 'model_name';
         $this->fill(request()->only('search', 'page'));
@@ -130,9 +129,13 @@ class CarModelIndex extends Component
         }
     }
 
-    public function deleteProcess(CarModelRepository $carModelRepository)
+    public function deleteProcess(
+        CarModelRepository $carModelRepository, 
+        CarTypeModelRepository $carTypeModelRepository
+        )
     {
         $delete = $carModelRepository->massDelete($this->checked);
+        $delete_child = $carTypeModelRepository->deleteChild($this->checked);
 
         if($delete) {
             $this->allChecked = false;
@@ -146,15 +149,17 @@ class CarModelIndex extends Component
 
     public function allChecked()
     {
-        $datas = CarModel::select('id')->where($this->sortBy, 'like', '%'.$this->search.'%')
+        $id = (new CarModel())->getKeyName();
+
+        $datas = CarModel::select($id)->where($this->sortBy, 'like', '%'.$this->search.'%')
         ->orderBy($this->sortBy, $this->sortDirection)
         ->paginate($this->perPageSelected);
       
         // Dari Unchecked ke Checked
         if($this->allChecked == true) {
             foreach($datas as $data) {
-                if(!in_array($data->id, $this->checked)) {
-                    array_push($this->checked, (string) $data->id);
+                if(!in_array($data->$id, $this->checked)) {
+                    array_push($this->checked, (string) $data->$id);
                 }
             }
         } else {

@@ -43,7 +43,9 @@
                 </a>
             </li>
 
-            <li class="menu single-menu">
+            <li class="menu single-menu 
+                {{ Request::is('car-model') || Request::is('car-type-model') ? 'active' : ''}}
+            ">
                 <a href="#starter-kit" data-toggle="collapse" aria-expanded="true" class="dropdown-toggle autodroprown">
                     <div class="">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -65,8 +67,8 @@
                     <li class="{{ Request::is('car-model') ? 'active' : '' }}">
                         <a href="{{ url()->route('car-model.index') }}"> Car Model </a>
                     </li>
-                    <li>
-                        <a href="starter_kit_breadcrumb.html"> Car Type </a>
+                    <li class="{{ Request::is('car-type-model') ? 'active' : '' }}">
+                        <a href="{{ url()->route('car-type-model.index') }}"> Car Type Model </a>
                     </li>
                 </ul>
             </li>

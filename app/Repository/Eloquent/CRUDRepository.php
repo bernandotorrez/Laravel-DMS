@@ -83,9 +83,24 @@ class CRUDRepository implements EloquentRepositoryInterface
         $search, 
         $sortBy, 
         $sortDirection, 
-        $perPageSelected)
+        $perPageSelected
+        )
     {
         return $this->model->where($where, 'like', '%'.$search.'%')
+            ->orderBy($sortBy, $sortDirection)
+            ->paginate($perPageSelected);
+    }
+
+    public function datatablePaginationWithRelation(
+        $where, 
+        $search, 
+        $sortBy, 
+        $sortDirection, 
+        $perPageSelected,
+        $relation)
+    {
+
+        return $this->model->with($relation)->where($where, 'like', '%'.$search.'%')
             ->orderBy($sortBy, $sortDirection)
             ->paginate($perPageSelected);
     }

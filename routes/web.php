@@ -6,11 +6,10 @@ use App\Http\Livewire\Page\About\AboutIndex;
 use App\Http\Livewire\Page\Login\LoginIndex;
 use App\Http\Livewire\Page\Register\RegisterIndex;
 use App\Http\Livewire\Page\CarModel\CarModelIndex;
-use App\Http\Livewire\Page\CarModel\CarModelEdit;
+use App\Http\Livewire\Page\CarTypeModel\CarTypeModelIndex;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\DatatablesController;
 use App\Models\CarTypeModel;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -37,8 +36,10 @@ Route::get('/logout', function() {
 Route::middleware('auth')->group(function() {   
     Route::get('/home', HomeIndex::class)->name('home.index');
     Route::get('/about', AboutIndex::class)->name('about.index');
+
     Route::get('/car-model', CarModelIndex::class)->name('car-model.index');
-    Route::get('/car-model/edit/{id}', CarModelEdit::class)->name('car-model.edit');
+
+    Route::get('/car-type-model', CarTypeModelIndex::class)->name('car-type-model.index');
 
     Route::get('/tes', function() {
         $data = CarTypeModel::with('model')->get();

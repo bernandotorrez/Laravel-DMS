@@ -67,9 +67,21 @@
 
                                     <div class="form-group mb-4">
                                         <label for="model_name">Model Name</label>
+                                        <select class="form-control" wire:model.lazy="bind.id_model">
+                                            <option value="">- Choose Model -</option>
+                                            @foreach($car_model as $model)
+                                            <option value="{{ $model->id_model }}">{{ $model->model_name }}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('bind.id_model') <span class="error">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+
+                                    <div class="form-group mb-4">
+                                        <label for="model_name">Type Model Name</label>
                                         <input type="text" class="form-control" id="model_name" maxlength="50"
-                                            placeholder="Example : Porsche" wire:model.debounce.500ms="bind.model_name">
-                                        @error('bind.model_name') <span class="error">{{ $message }}</span>
+                                            placeholder="Example : Porsche" wire:model.debounce.500ms="bind.type_model_name">
+                                        @error('bind.type_model_name') <span class="error">{{ $message }}</span>
                                         @enderror
                                     </div>
 
@@ -131,25 +143,39 @@
                                     @endif
                                 </a>
                             </th>
+                            <th wire:click="sortBy('type_model_name')">
+                                <a href="javascript:void(0);">Type Model Name
+                                    @if($sortBy != 'type_model_name')
+                                    <i class="fas fa-arrows-alt-v"></i>
+                                    @elseif($sortBy == 'type_model_name')
+                                        @if($sortDirection == 'asc')
+                                        <i class="fas fa-sort-alpha-up"></i>
+                                        @elseif($sortDirection == 'desc')
+                                        <i class="fas fa-sort-alpha-down-alt"></i>
+                                        @endif
+                                    @endif
+                                </a>
+                            </th>
                         </thead>
                         <tbody>
-                            @foreach($car_model_paginate as $data)
+                            @foreach($car_type_model as $data)
                             <tr>
                                 <td>
                                     <input type="checkbox" 
-                                    value="{{ $data->id_model }}" 
+                                    value="{{ $data->id_type_model }}" 
                                     class="new-control-input"
                                     wire:model="checked">
                                 </td>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $data->model_name }}</td>
+                                <td>{{ $data->oneModel->model_name }}</td>
+                                <td>{{ $data->type_model_name }}</td>
                             </tr>
                             @endforeach
                         </tbody>
                     </table>
 
                     <div class="d-flex justify-content-center">
-                        {{ $car_model_paginate->links('livewire.pagination-links') }}
+                        {{ $car_type_model->links('livewire.pagination-links') }}
                     </div>
 
                 </div>

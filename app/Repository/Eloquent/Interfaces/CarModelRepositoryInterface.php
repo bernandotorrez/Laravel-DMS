@@ -7,5 +7,5 @@ use Illuminate\Support\Collection;
 
 interface CarModelRepositoryInterface
 {
-    
+    public function getAllData(): Collection;
 }

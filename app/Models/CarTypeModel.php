@@ -16,7 +16,7 @@ class CarTypeModel extends Model
     protected $fillable = ['id_model', 'type_model_name'];
     protected $primaryKey = 'id_type_model';
 
-    public function model()
+    public function oneModel()
     {
         return $this->belongsTo(CarModel::class, 'id_model');
     }
