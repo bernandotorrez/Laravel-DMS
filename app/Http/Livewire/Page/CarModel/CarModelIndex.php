@@ -57,11 +57,15 @@ class CarModelIndex extends Component
         $this->reset(['bind']);
     }
 
-    public function render()
+    public function render(CarModelRepository $carModelRepository)
     {
-        $car_model_paginate = CarModel::where('model_name', 'like', '%'.$this->search.'%')
-            ->orderBy($this->sortBy, $this->sortDirection)
-            ->paginate($this->perPageSelected);
+        $car_model_paginate = $carModelRepository->datatablePagination(
+            'model_name',
+            $this->search,
+            $this->sortBy,
+            $this->sortDirection,
+            $this->perPageSelected
+        );
 
         return view('livewire.page.car-model.car-model-index', [
             'car_model_paginate' => $car_model_paginate
@@ -136,6 +140,26 @@ class CarModelIndex extends Component
             $this->delete_status = 'success';
         } else {
             $this->delete_status = 'fail';
+        }
+
+    }
+
+    public function allChecked()
+    {
+        $datas = CarModel::select('id')->where($this->sortBy, 'like', '%'.$this->search.'%')
+        ->orderBy($this->sortBy, $this->sortDirection)
+        ->paginate($this->perPageSelected);
+      
+        // Dari Unchecked ke Checked
+        if($this->allChecked == true) {
+            foreach($datas as $data) {
+                if(!in_array($data->id, $this->checked)) {
+                    array_push($this->checked, (string) $data->id);
+                }
+            }
+        } else {
+            // Checked ke Unchecked
+            $this->checked = [];
         }
 
     }

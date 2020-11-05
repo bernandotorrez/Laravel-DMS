@@ -27,24 +27,4 @@ trait WithDatatable
     {
         return $this->sortDirection === 'asc' ? 'desc' : 'asc';
     }
-
-    public function allChecked()
-    {
-        $datas = CarModel::select('id')->where($this->sortBy, 'like', '%'.$this->search.'%')
-        ->orderBy($this->sortBy, $this->sortDirection)
-        ->paginate($this->perPageSelected);
-      
-        // Dari Unchecked ke Checked
-        if($this->allChecked == true) {
-            foreach($datas as $data) {
-                if(!in_array($data->id, $this->checked)) {
-                    array_push($this->checked, (string) $data->id);
-                }
-            }
-        } else {
-            // Checked ke Unchecked
-            $this->checked = [];
-        }
-
-    }
 }

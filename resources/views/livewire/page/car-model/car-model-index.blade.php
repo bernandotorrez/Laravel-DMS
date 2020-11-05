@@ -117,11 +117,12 @@
                                 wire:model="allChecked"
                                 wire:click="allChecked">
                             </th>
-                            <th width="10%" wire:click="sortBy('id_model')">
+                            <th width="10%">No</th>
+                            <!-- <th width="10%" wire:click="sortBy('id_model')">
                                 <a href="javascript:void(0);">ID
-                                    @if($sortBy != 'id')
+                                    @if($sortBy != 'id_model')
                                     <i class="fas fa-arrows-alt-v"></i>
-                                    @elseif($sortBy == 'id')
+                                    @elseif($sortBy == 'id_model')
                                         @if($sortDirection == 'asc')
                                         <i class="fas fa-sort-alpha-up"></i>
                                         @elseif($sortDirection == 'desc')
@@ -129,7 +130,7 @@
                                         @endif
                                     @endif
                                 </a>
-                            </th>
+                            </th> -->
                             <th wire:click="sortBy('model_name')">
                                 <a href="javascript:void(0);">Model Name
                                     @if($sortBy != 'model_name')
@@ -153,7 +154,8 @@
                                     class="new-control-input"
                                     wire:model="checked">
                                 </td>
-                                <td>{{ $data->id_model }}</td>
+                                <td>{{ $loop->iteration }}</td>
+                                <!-- <td>{{ $data->id_model }}</td> -->
                                 <td>{{ $data->model_name }}</td>
                             </tr>
                             @endforeach
