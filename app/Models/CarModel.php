@@ -15,6 +15,7 @@ class CarModel extends Model
     protected $table = 'tbl_model_porsche';
     protected $fillable = ['model_name'];
     protected $primaryKey = 'id_model';
+    protected $visible = ['id_model', 'model_name'];
 
     public function typeModels()
     {

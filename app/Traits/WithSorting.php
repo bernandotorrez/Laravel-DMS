@@ -1,18 +1,11 @@
 <?php
 
-
 namespace App\Traits;
-use App\Models\CarModel;
-use Livewire\WithPagination;
 
-trait WithDatatable
+trait WithSorting
 {
-    use WithPagination;
 
-    protected $paginationTheme = 'bootstrap';
-    public array $perPage = [10, 15, 20, 25, 50];
-    public int $perPageSelected = 10;
-    public string $search = '', $sortBy = '', $sortDirection = 'asc';
+    public string $sortBy, $sortDirection = 'asc';
 
     public function sortBy($field)
     {
