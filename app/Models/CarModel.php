@@ -20,5 +20,13 @@ class CarModel extends Model
     {
         return $this->hasMany(CarTypeModel::class, 'id_model');
     }
-    //public $incrementing = false;
+    
+    protected static function booted()
+    {
+        static::deleting(function($model) {
+            $typeModel = CarTypeModel::where('id', 47)->deleted();
+
+            return parent::delete();
+        });
+    }
 }

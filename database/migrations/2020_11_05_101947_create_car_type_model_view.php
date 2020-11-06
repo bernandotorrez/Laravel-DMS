@@ -42,7 +42,7 @@ class CreateCarTypeModelView extends Migration
     private function dropView()
     {
         return "
-            DROP VIEW IF EXISTS 'view_type_model_porsche';
+            DROP VIEW IF EXISTS view_type_model_porsche;
             ";
     }
 }

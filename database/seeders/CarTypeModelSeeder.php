@@ -18,9 +18,7 @@ class CarTypeModelSeeder extends Seeder
         //CarTypeModel::factory()->count(10)->for(CarModel::factory()->state(['model_name' => 'Asperiores.']))->create();
         CarTypeModel::factory()
         ->count(10)
-        ->forModel([
-            'model_name' => 'Tes'
-        ])
+        ->forOneModel()
         ->create();
     }
 }
