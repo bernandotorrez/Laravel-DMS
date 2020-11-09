@@ -42,16 +42,17 @@ Route::middleware('auth')->group(function() {
     Route::get('/car-type-model', CarTypeModelIndex::class)->name('car-type-model.index');
 
     Route::get('/tes', function() {
-        $data = CarTypeModel::with('model')->get();
+        $data = CarTypeModel::with('oneModel');
         
-        foreach($data as $x) {
-            echo 'ID Model : '.$x->model->id_model;
-            echo ' ID Type Model : '.$x->id_type_model;
-            echo ' Model Name : '.$x->model->model_name;
-            echo ' Type Model Name : '.$x->type_model_name;
-            echo '<br>';
-        }
+        $data->chunk(100, function($tes) {
+            foreach($tes as $x) {
+                echo 'ID Model : '.$x->id_model;
+                echo ' ID Type Model : '.$x->id_type_model;
+                echo ' Model Name : '.$x->oneModel->model_name;
+                echo ' Type Model Name : '.$x->type_model_name;
+                echo '<br>';
+            }
+        });
+        
     });
 });
-
-Route::get('/car-model/json', [DatatablesController::class, 'carModelJson'])->name('datatable.car-model');

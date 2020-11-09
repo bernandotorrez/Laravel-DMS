@@ -25,7 +25,7 @@ class CarModelIndex extends Component
      * Page Attributes
      */
     protected string $pageTitle = "Car Model";
-    public bool $is_edit = false, $allChecked = false;
+    public bool $is_edit = false, $allChecked = false, $insertDuplicate = false;
     public string $insert_status = '', $update_status = '', $delete_status = '';
     public array $checked = [];
     
@@ -61,6 +61,7 @@ class CarModelIndex extends Component
     public function updated($propertyName)
     {
         $this->validateOnly($propertyName);
+        $this->insertDuplicate = false;
     }
 
     public function updatingSearch()
@@ -130,15 +131,21 @@ class CarModelIndex extends Component
 
         $data = array('model_name' => ucfirst($this->bind['model_name']));
 
-        $insert = $carModelRepository->create($data);
+        $count = $carModelRepository->findDuplicate($data);
 
-        if($insert) {
-            $this->insert_status = 'success';
-            $this->resetForm();
-            $this->emit('closeModal');
+        if($count <= 0) {
+            $insert = $carModelRepository->create($data);
+
+            if($insert) {
+                $this->insert_status = 'success';
+                $this->resetForm();
+                $this->emit('closeModal');
+            } else {
+                $this->insert_status = 'fail';
+            }
         } else {
-            $this->insert_status = 'fail';
-        } 
+            $this->insertDuplicate = true;
+        }
     }
 
     public function editForm(CarModelRepository $carModelRepository)

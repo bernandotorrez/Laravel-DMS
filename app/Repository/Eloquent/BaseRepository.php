@@ -47,6 +47,15 @@ class BaseRepository implements BaseInterface
     }
 
     /**
+     * Check Duplicated Data
+     * @param array $where
+     */
+    public function findDuplicate(array $where)
+    {
+        return $this->model->where($where)->count();
+    }
+
+    /**
      * Update Data
      * @param int $id
      * @param array $data

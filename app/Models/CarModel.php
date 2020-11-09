@@ -24,10 +24,9 @@ class CarModel extends Model
     
     protected static function booted()
     {
-        static::deleting(function($model) {
-            $typeModel = CarTypeModel::where('id', 47)->deleted();
-
-            return parent::delete();
+        static::deleting(function ($user) {
+            // echo '<br>';
+            // print_r($user);die;
         });
     }
 }
