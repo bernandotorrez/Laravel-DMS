@@ -33,12 +33,12 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    // protected $casts = [
-    //     'email_verified_at' => 'datetime',
-    // ];
+    protected $primaryKey = 'id';
+    protected $visible = ['id', 'name', 'email', 'no_hp', 'status'];
+    protected $searchableColumn = ['id', 'name', 'email', 'no_hp', 'status'];
+
+    public function getSearchableColumn()
+    {
+        return $this->searchableColumn;
+    }
 }

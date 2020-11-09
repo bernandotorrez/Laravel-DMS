@@ -3,7 +3,7 @@
 namespace App\Http\Livewire\Page\Register;
 
 use Livewire\Component;
-use App\Repository\Eloquent\Repo\UserRepository;
+use App\Repository\Eloquent\UserRepository;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -55,7 +55,7 @@ class RegisterIndex extends Component
     {
         $this->validate();
 
-        $checkEmail = $userRepository->findEmail($this->email);
+        $checkEmail = $userRepository->findDuplicate(['email' => $this->email]);
 
         if($checkEmail == 1) {
             session()->flash('register_failed', 'Email is Already Exist!');
