@@ -2,35 +2,46 @@
 
 namespace App\Http\Livewire\Page\CarTypeModel;
 
-use App\Models\CarTypeModel;
-use App\Repository\Eloquent\Repo\CarModelRepository;
-use App\Repository\Eloquent\Repo\CarTypeModelRepository;
-use App\Traits\WithDatatable;
-use Illuminate\Support\Facades\DB;
+use App\Repository\Eloquent\CarModelRepository;
+use App\Repository\Eloquent\CarTypeModelRepository;
+use App\Traits\WithSorting;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class CarTypeModelIndex extends Component
 {
-    use WithDatatable;
+    use WithPagination;
+    use WithSorting;
 
-    protected string $pageTitle = 'Car Type Model';
-    protected string $primaryKey = '';
-    public bool $is_edit = false, $allChecked = false;
-    public string $insert_status = '', $update_status = '', $delete_status = '';
+    /**
+     * Pagination Attributes
+     */
+    protected $paginationTheme = 'bootstrap';
+    public array $perPage = [10, 15, 20, 25, 50];
+    public int $perPageSelected = 10;
+    public string $search = '';
+
+    /**
+     * Page Attributes
+     */
+    protected string $pageTitle = "Car Model";
+    public bool $is_edit = false, $allChecked = false, $insertDuplicate = false, $updateDuplicate = false;
+    public string $insert_status = '', $update_status = '', $delete_status = '', $viewName = 'view_type_model_porsche';
     public array $checked = [];
     
     protected $queryString = [
         'search' => ['except' => ''],
         'page' => ['except' => 1]
     ];
-
+    
     public $bind = [
-        'id_type_model' => 0,
         'id_model' => '',
         'type_model_name' => ''
     ];
 
-    // Validation
+    /**
+     * Validation Attributes
+     */
     protected $rules = [
         'bind.id_model' => 'required',
         'bind.type_model_name' => 'required|min:3|max:50'
@@ -42,7 +53,6 @@ class CarTypeModelIndex extends Component
         'bind.type_model_name.min' => 'The Type Model Name must be at least 3 Characters',
         'bind.type_model_name.max' => 'The Type Model Name Cant be maximal 50 Characters',
     ];
-    // Validation
 
     public function mount()
     {
@@ -53,6 +63,12 @@ class CarTypeModelIndex extends Component
     public function updated($propertyName)
     {
         $this->validateOnly($propertyName);
+        $this->insertDuplicate = false;
+    }
+
+    public function updatingSearch()
+    {
+        $this->resetPage();
     }
 
     public function resetForm()
@@ -61,42 +77,38 @@ class CarTypeModelIndex extends Component
     }
 
     public function render(
+        CarTypeModelRepository $carTypeModelRepository,
         CarModelRepository $carModelRepository
-        )
+    )
     {
-        // $car_type_model = $carTypeModelRepository->datatablePaginationWithRelation(
-        //     'type_model_name',
-        //     ['model_name'],
-        //     $this->search,
-        //     $this->sortBy,
-        //     $this->sortDirection,
-        //     $this->perPageSelected,
-        //     'oneModel'
-        // );
+        $dataCarTypeModel = $carTypeModelRepository->viewPagination(
+            $this->viewName,
+            $this->search,
+            $this->sortBy,
+            $this->sortDirection,
+            $this->perPageSelected
+        );
 
-        $car_type_model = DB::table('view_type_model_porsche')
-        ->where($this->sortBy, 'like', '%'.$this->search.'%')
-        ->orderBy($this->sortBy, $this->sortDirection)
-        ->paginate($this->perPageSelected);
-
-        $car_model = $carModelRepository->getAllData();
+        $dataCarModel = $carModelRepository->all(['id_model', 'model_name']);
 
         return view('livewire.page.car-type-model.car-type-model-index', [
-            'car_type_model' => $car_type_model,
-            'car_model' => $car_model
-        ])
-        ->layout('layouts.app', array('title' => $this->pageTitle));
+                    'car_type_model' => $dataCarTypeModel,
+                    'car_model' => $dataCarModel
+                ])
+                ->layout('layouts.app', array('title' => $this->pageTitle));
     }
 
-    public function allChecked()
+    public function allChecked(CarTypeModelRepository $carTypeModelRepository)
     {
-        $id = (new CarTypeModel)->getKeyName();
+        $datas = $carTypeModelRepository->viewChecked(
+            $this->viewName,
+            $this->search,
+            $this->sortBy,
+            $this->sortDirection,
+            $this->perPageSelected
+        );
 
-        $datas = DB::table('view_type_model_porsche')
-        ->select($id)
-        ->where($this->sortBy, 'like', '%'.$this->search.'%')
-        ->orderBy($this->sortBy, $this->sortDirection)
-        ->paginate($this->perPageSelected);
+        $id = $carTypeModelRepository->getPrimaryKey();
       
         // Dari Unchecked ke Checked
         if($this->allChecked == true) {
@@ -128,17 +140,76 @@ class CarTypeModelIndex extends Component
 
         $data = array(
             'id_model' => $this->bind['id_model'],
-            'type_model_name' => ucfirst($this->bind['type_model_name'])
+            'type_model_name' => ucwords($this->bind['type_model_name'])
         );
 
-        $insert = $carTypeModelRepository->create($data);
-
-        if($insert) {
-            $this->insert_status = 'success';
-            $this->resetForm();
-            $this->emit('closeModal');
+        $count = $carTypeModelRepository->findDuplicate($data);
+        
+        if($count >= 1) {
+            $this->insertDuplicate = true;
         } else {
-            $this->insert_status = 'fail';
-        } 
+            $insert = $carTypeModelRepository->create($data);
+
+            if($insert) {
+                $this->insert_status = 'success';
+                $this->resetForm();
+                $this->emit('closeModal');
+            } else {
+                $this->insert_status = 'fail';
+            }
+        }
+    }
+
+    public function editForm(CarTypeModelRepository $carTypeModelRepository)
+    {
+        $this->insert_status = '';
+        $this->update_status = '';
+        $this->is_edit = true;
+       
+        $data = $carTypeModelRepository->getByID($this->checked[0]);
+        $this->bind['id_type_model'] = $data->id_type_model;
+        $this->bind['id_model'] = $data->id_model;
+        $this->bind['type_model_name'] = $data->type_model_name;
+
+        $this->emit('openModal');
+    }
+
+    public function editProcess(CarTypeModelRepository $carTypeModelRepository)
+    {
+        $this->validate();
+
+        $data = array(
+            'id_model' => $this->bind['id_model'],
+            'type_model_name' => ucwords($this->bind['type_model_name'])
+        );
+
+        $count = $carTypeModelRepository->findDuplicate($data);
+        
+        if($count >= 1) {
+            $this->updateDuplicate = true;
+        } else {
+            $update = $carTypeModelRepository->update($this->bind['id_type_model'], $data);
+
+            if($update) {
+                $this->update_status = 'success';
+                $this->is_edit = false;
+                $this->resetForm();
+                $this->emit('closeModal');
+            } else {
+                $this->update_status = 'fail';
+            }
+        }  
+    }
+
+    public function deleteProcess(CarTypeModelRepository $carTypeModelRepository)
+    {
+        $delete = $carTypeModelRepository->massDelete($this->checked);
+
+        if($delete) {
+            $this->delete_status = 'success';
+            $this->resetForm();
+        } else {
+            $this->delete_status = 'fail';
+        }
     }
 }

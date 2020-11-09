@@ -2,16 +2,19 @@
 
 namespace App\Repository\Eloquent;
 use App\Repository\Eloquent\BaseInterface;
+use Illuminate\Support\Facades\DB;
 
 class BaseRepository implements BaseInterface
 {
     protected $model;
     protected $primaryKey;
+    protected $searchableColumn;
 
-    public function __construct($model, $primaryKey)
+    public function __construct($model, $primaryKey, $searchableColumn)
     {
         $this->primaryKey = $primaryKey;
         $this->model = $model;
+        $this->searchableColumn = $searchableColumn;
     }
 
     /**
@@ -31,6 +34,15 @@ class BaseRepository implements BaseInterface
     public function create(array $data)
     {
         return $this->model->create($data);
+    }
+
+    /**
+     * Check Duplicated Data
+     * @param array $where
+     */
+    public function findDuplicate(array $where)
+    {
+        return $this->model->where($where)->count();
     }
 
     /**
@@ -71,6 +83,23 @@ class BaseRepository implements BaseInterface
     }
 
     /**
+     * Get Primary Key of the Model
+     */
+    public function getPrimaryKey()
+    {
+        return $this->primaryKey;
+    }
+
+    /**
+     * Get Visible Column of the Model
+     * App\Model, protected $visible = [];
+     */
+    public function getColumn()
+    {
+        return $this->column;
+    }
+
+    /**
      * Get Data With Pagination
      * @param array $arrayField
      * @param string $search
@@ -79,16 +108,53 @@ class BaseRepository implements BaseInterface
      * @param int $perPage
      */
     public function pagination(
-        array $arrayField,
         string $search = '',
         string $sortBy,
         string $sortDirection = 'asc',
         int $perPage
     )
     {
+        $searchableColumn = $this->searchableColumn;
+        $countField = count($searchableColumn);
+
+        $data = $this->model;
+        $data = $data->where(function($query) use ($searchableColumn, $countField, $search) {
+            if($countField >= 1) {
+                for($i=0;$i <= $countField-1;$i++) {
+                    if($i == 0) {
+                        $query = $query->where($searchableColumn[$i], 'like', '%'.$search.'%');
+                    } else {
+                        $query = $query->orWhere($searchableColumn[$i], 'like', '%'.$search.'%');
+                    }
+                }
+            }
+        });
+        $data = $data->orderBy($sortBy, $sortDirection);
+        $data = $data->paginate($perPage);
+
+        return $data;
+    }
+
+    /**
+     * Get Data Checked With Pagination
+     * @param array $arrayField
+     * @param string $search
+     * @param string $sortBy
+     * @param string $sortDirection
+     * @param int $perPage
+     */
+    public function checked(
+        string $search = '',
+        string $sortBy,
+        string $sortDirection = 'asc',
+        int $perPage
+    )
+    {
+        $arrayField = $this->searchableColumn;
         $countField = count($arrayField);
 
         $data = $this->model;
+        $data = $data->select($this->primaryKey);
         $data = $data->where(function($query) use ($arrayField, $countField, $search) {
             if($countField >= 1) {
                 for($i=0;$i <= $countField-1;$i++) {
@@ -106,17 +172,65 @@ class BaseRepository implements BaseInterface
         return $data;
     }
 
-    public function checked(
-        array $arrayField,
+    /**
+     * Get Data Pagination With Query View
+     * @param string $viewName
+     * @param array $arrayField
+     * @param string $search
+     * @param string $sortBy
+     * @param string $sortDirection
+     * @param int $perPage
+     */
+    public function viewPagination(
+        string $viewName,
         string $search = '',
         string $sortBy,
         string $sortDirection = 'asc',
         int $perPage
     )
     {
+        $arrayField = $this->searchableColumn;
         $countField = count($arrayField);
 
-        $data = $this->model;
+        $data = DB::table($viewName);
+        $data = $data->where(function($query) use ($arrayField, $countField, $search) {
+            if($countField >= 1) {
+                for($i=0;$i <= $countField-1;$i++) {
+                    if($i == 0) {
+                        $query = $query->where($arrayField[$i], 'like', '%'.$search.'%');
+                    } else {
+                        $query = $query->orWhere($arrayField[$i], 'like', '%'.$search.'%');
+                    }
+                }
+            }
+        });
+        $data = $data->orderBy($sortBy, $sortDirection);
+        $data = $data->paginate($perPage);
+
+        return $data;
+    }
+
+    /**
+     * Get Data Pagination With Query View
+     * @param string $viewName
+     * @param array $arrayField
+     * @param string $search
+     * @param string $sortBy
+     * @param string $sortDirection
+     * @param int $perPage
+     */
+    public function viewChecked(
+        string $viewName,
+        string $search = '',
+        string $sortBy,
+        string $sortDirection = 'asc',
+        int $perPage
+    )
+    {
+        $arrayField = $this->searchableColumn;
+        $countField = count($arrayField);
+
+        $data = DB::table($viewName);
         $data = $data->select($this->primaryKey);
         $data = $data->where(function($query) use ($arrayField, $countField, $search) {
             if($countField >= 1) {

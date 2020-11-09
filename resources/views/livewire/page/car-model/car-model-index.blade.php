@@ -10,13 +10,27 @@
                 <div class="alert alert-danger"> Delete Failed! </div>
                 @endif
 
+                @if($insert_status == 'success')
+                <div class="alert alert-success"> Insert Success! </div>
+                @elseif($insert_status == 'fail')
+                <div class="alert alert-danger"> Insert Failed! </div>
+                @endif
+
+                @if($update_status == 'success')
+                <div class="alert alert-success"> Update Success! </div>
+                @elseif($update_status == 'fail')
+                <div class="alert alert-danger"> Update Failed! </div>
+                @endif
+
                 <button type="button" 
                 class="btn btn-primary mr-4" 
+                id="addButton"
                 wire:click.prevent="addForm"> Add
                 </button>
 
                 <button type="button" 
                 class="btn btn-success mr-4" 
+                id="editButton"
                 wire:click.prevent="editForm"
                 @if(count($checked) != 1) disabled @endif
                 > Edit
@@ -24,6 +38,7 @@
 
                 <button type="button" 
                 class="btn btn-danger" 
+                id="deleteButton"
                 wire:click.prevent="deleteProcess"
                 @if(count($checked) <= 0 ) disabled @endif
                 > Delete
@@ -53,16 +68,8 @@
                                 <p class=""></p>
 
                                 <form>
-                                    @if($insert_status == 'success')
-                                    <div class="alert alert-success"> Insert Success! </div>
-                                    @elseif($insert_status == 'fail')
-                                    <div class="alert alert-danger"> Insert Failed! </div>
-                                    @endif
-
-                                    @if($update_status == 'success')
-                                    <div class="alert alert-success"> Update Success! </div>
-                                    @elseif($update_status == 'fail')
-                                    <div class="alert alert-danger"> Update Failed! </div>
+                                    @if($insertDuplicate == true)
+                                    <div class="alert alert-warning"> <strong> {{ $bind['model_name'] }} </strong> already Exist </div>
                                     @endif
 
                                     <div class="form-group mb-4">

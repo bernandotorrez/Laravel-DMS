@@ -22,10 +22,14 @@ class InsertTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit('/car-model')
-                    ->type('#model_name', '')
-                    ->click('#submit')
-                    ->waitForText('The model name field is required.')
-                    ->assertSee('The model name field is required.');
+                    ->click('#addButton');
+
+            $browser->whenAvailable('#exampleModal', function($modal) {
+                $modal->type('#model_name', '')
+                ->click('#submit')
+                ->waitForText('The Model Name Cant be Empty!')
+                ->assertSee('The Model Name Cant be Empty!');
+            });
         });
     }
 
@@ -34,10 +38,14 @@ class InsertTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit('/car-model')
-                    ->type('#model_name', '12')
+                    ->click('#addButton');
+
+            $browser->whenAvailable('#exampleModal', function($modal) {
+                $modal->type('#model_name', '12')
                     ->click('#submit')
-                    ->waitForText('The model name must be at least 3 characters.')
-                    ->assertSee('The model name must be at least 3 characters.');
+                    ->waitForText('The Model Name must be at least 3 Characters')
+                    ->assertSee('The Model Name must be at least 3 Characters');
+            });
         });
     }
     // Negative Test
@@ -47,11 +55,15 @@ class InsertTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit('/car-model')
-                    ->type('#model_name', Str::random(5))
-                    ->click('#submit')
-                    ->pause(5000)
-                    ->assertDontSee('The model name field is required.')
-                    ->assertDontSee('The model name must be at least 3 characters.');
+                    ->click('#addButton');
+
+            $browser->whenAvailable('#exampleModal', function($modal) {
+                $modal->type('#model_name', Str::random(5))
+                ->click('#submit')
+                ->pause(5000)
+                ->assertDontSee('The Model Name Cant be Empty!')
+                ->assertDontSee('The Model Name must be at least 3 Characters');
+            });
         });
     }
 
@@ -60,10 +72,15 @@ class InsertTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit('/car-model')
-                    ->type('#model_name', Str::random(5))
-                    ->click('#submit')
-                    ->waitForText('Insert Success!')
-                    ->assertSee('Insert Success!');
+                    ->click('#addButton');
+
+            $browser->whenAvailable('#exampleModal', function($modal) {
+                $modal->type('#model_name', Str::random(5))
+                ->click('#submit');
+            });
+
+            $browser->waitForText('Insert Success!')
+            ->assertSee('Insert Success!');
         });
     }
 }
