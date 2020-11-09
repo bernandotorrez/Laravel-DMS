@@ -24,11 +24,13 @@
 
                 <button type="button" 
                 class="btn btn-primary mr-4" 
+                id="addButton"
                 wire:click.prevent="addForm"> Add
                 </button>
 
                 <button type="button" 
                 class="btn btn-success mr-4" 
+                id="editButton"
                 wire:click.prevent="editForm"
                 @if(count($checked) != 1) disabled @endif
                 > Edit
@@ -36,6 +38,7 @@
 
                 <button type="button" 
                 class="btn btn-danger" 
+                id="deleteButton"
                 wire:click.prevent="deleteProcess"
                 @if(count($checked) <= 0 ) disabled @endif
                 > Delete
@@ -72,7 +75,7 @@
 
                                     <div class="form-group mb-4">
                                         <label for="model_name">Model Name</label>
-                                        <select class="form-control" wire:model.lazy="bind.id_model">
+                                        <select class="form-control" wire:model.lazy="bind.id_model" id="id_model">
                                             <option value="">- Choose Model -</option>
                                             @foreach($car_model as $model)
                                             <option value="{{ $model->id_model }}">{{ $model->model_name }}</option>
@@ -84,7 +87,7 @@
 
                                     <div class="form-group mb-4">
                                         <label for="model_name">Type Model Name</label>
-                                        <input type="text" class="form-control" id="model_name" maxlength="50"
+                                        <input type="text" class="form-control" id="type_model_name" maxlength="50"
                                             placeholder="Example : Porsche" wire:model.debounce.500ms="bind.type_model_name">
                                         @error('bind.type_model_name') <span class="error">{{ $message }}</span>
                                         @enderror
