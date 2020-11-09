@@ -16,6 +16,7 @@ class CarModel extends Model
     protected $fillable = ['model_name'];
     protected $primaryKey = 'id_model';
     protected $visible = ['id_model', 'model_name'];
+    protected $searchableColumn = ['model_name'];
 
     public function typeModels()
     {
@@ -28,5 +29,10 @@ class CarModel extends Model
             // echo '<br>';
             // print_r($user);die;
         });
+    }
+
+    public function getSearchableColumn()
+    {
+        return $this->searchableColumn;
     }
 }

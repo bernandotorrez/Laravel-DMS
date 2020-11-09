@@ -9,7 +9,7 @@ class CarModelRepository extends BaseRepository
 {
     public function __construct(CarModel $model)
     {
-        parent::__construct($model, (new $model)->getKeyName(), (new $model)->getVisible());
+        parent::__construct($model, (new $model)->getKeyName(), (new $model)->getSearchableColumn());
     }
 
     

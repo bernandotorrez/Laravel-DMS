@@ -8,20 +8,27 @@ class BaseRepository implements BaseInterface
 {
     protected $model;
     protected $primaryKey;
-    protected $column;
+    protected $searchableColumn;
 
-    public function __construct($model, $primaryKey, $column)
+    public function __construct($model, $primaryKey, $searchableColumn)
     {
         $this->primaryKey = $primaryKey;
         $this->model = $model;
-        $this->column = $column;
+        $this->searchableColumn = $searchableColumn;
     }
 
+    /**
+     * Get Primary Key of the Model
+     */
     public function getPrimaryKey()
     {
         return $this->primaryKey;
     }
 
+    /**
+     * Get Visible Column of the Model
+     * App\Model, protected $visible = [];
+     */
     public function getColumn()
     {
         return $this->column;
@@ -101,23 +108,23 @@ class BaseRepository implements BaseInterface
      * @param int $perPage
      */
     public function pagination(
-        array $arrayField,
         string $search = '',
         string $sortBy,
         string $sortDirection = 'asc',
         int $perPage
     )
     {
-        $countField = count($arrayField);
+        $searchableColumn = $this->searchableColumn;
+        $countField = count($searchableColumn);
 
         $data = $this->model;
-        $data = $data->where(function($query) use ($arrayField, $countField, $search) {
+        $data = $data->where(function($query) use ($searchableColumn, $countField, $search) {
             if($countField >= 1) {
                 for($i=0;$i <= $countField-1;$i++) {
                     if($i == 0) {
-                        $query = $query->where($arrayField[$i], 'like', '%'.$search.'%');
+                        $query = $query->where($searchableColumn[$i], 'like', '%'.$search.'%');
                     } else {
-                        $query = $query->orWhere($arrayField[$i], 'like', '%'.$search.'%');
+                        $query = $query->orWhere($searchableColumn[$i], 'like', '%'.$search.'%');
                     }
                 }
             }
@@ -137,13 +144,13 @@ class BaseRepository implements BaseInterface
      * @param int $perPage
      */
     public function checked(
-        array $arrayField,
         string $search = '',
         string $sortBy,
         string $sortDirection = 'asc',
         int $perPage
     )
     {
+        $arrayField = $this->searchableColumn;
         $countField = count($arrayField);
 
         $data = $this->model;
@@ -176,13 +183,13 @@ class BaseRepository implements BaseInterface
      */
     public function viewPagination(
         string $viewName,
-        array $arrayField,
         string $search = '',
         string $sortBy,
         string $sortDirection = 'asc',
         int $perPage
     )
     {
+        $arrayField = $this->searchableColumn;
         $countField = count($arrayField);
 
         $data = DB::table($viewName);
@@ -214,13 +221,13 @@ class BaseRepository implements BaseInterface
      */
     public function viewChecked(
         string $viewName,
-        array $arrayField,
         string $search = '',
         string $sortBy,
         string $sortDirection = 'asc',
         int $perPage
     )
     {
+        $arrayField = $this->searchableColumn;
         $countField = count($arrayField);
 
         $data = DB::table($viewName);

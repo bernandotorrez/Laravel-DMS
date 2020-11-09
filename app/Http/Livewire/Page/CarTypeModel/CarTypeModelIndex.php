@@ -159,7 +159,7 @@ class CarTypeModelIndex extends Component
      * Page Attributes
      */
     protected string $pageTitle = "Car Model";
-    public bool $is_edit = false, $allChecked = false;
+    public bool $is_edit = false, $allChecked = false, $insertDuplicate = false;
     public string $insert_status = '', $update_status = '', $delete_status = '', $viewName = 'view_type_model_porsche';
     public array $checked = [];
     
@@ -169,8 +169,8 @@ class CarTypeModelIndex extends Component
     ];
     
     public $bind = [
-        'id_model' => 0,
-        'model_name' => ''
+        'id_model' => '',
+        'type_model_name' => ''
     ];
 
     /**
@@ -190,13 +190,14 @@ class CarTypeModelIndex extends Component
 
     public function mount()
     {
-        $this->sortBy = 'model_name';
+        $this->sortBy = 'type_model_name';
         $this->fill(request()->only('search', 'page'));
     }
 
     public function updated($propertyName)
     {
         $this->validateOnly($propertyName);
+        $this->insertDuplicate = false;
     }
 
     public function updatingSearch()
@@ -212,11 +213,10 @@ class CarTypeModelIndex extends Component
     public function render(
         CarTypeModelRepository $carTypeModelRepository,
         CarModelRepository $carModelRepository
-        )
+    )
     {
         $dataCarTypeModel = $carTypeModelRepository->viewPagination(
             $this->viewName,
-            $carTypeModelRepository->getColumn(),
             $this->search,
             $this->sortBy,
             $this->sortDirection,
@@ -236,7 +236,6 @@ class CarTypeModelIndex extends Component
     {
         $datas = $carTypeModelRepository->viewChecked(
             $this->viewName,
-            $carTypeModelRepository->getColumn(),
             $this->search,
             $this->sortBy,
             $this->sortDirection,
@@ -257,5 +256,41 @@ class CarTypeModelIndex extends Component
             $this->checked = [];
         }
 
+    }
+
+    public function addForm()
+    {
+        $this->insert_status = '';
+        $this->update_status = '';
+        $this->is_edit = false;
+        $this->resetForm();
+
+        $this->emit('openModal');
+    }
+
+    public function addProcess(CarTypeModelRepository $carTypeModelRepository)
+    {
+        $this->validate();
+
+        $data = array(
+            'id_model' => $this->bind['id_model'],
+            'type_model_name' => ucwords($this->bind['type_model_name'])
+        );
+
+        $count = $carTypeModelRepository->findDuplicate($data);
+        
+        if($count >= 1) {
+            $this->insertDuplicate = true;
+        } else {
+            $insert = $carTypeModelRepository->create($data);
+
+            if($insert) {
+                $this->insert_status = 'success';
+                $this->resetForm();
+                $this->emit('closeModal');
+            } else {
+                $this->insert_status = 'fail';
+            }
+        }
     }
 }

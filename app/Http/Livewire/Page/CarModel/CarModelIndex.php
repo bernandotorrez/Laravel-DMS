@@ -35,7 +35,7 @@ class CarModelIndex extends Component
     ];
     
     public $bind = [
-        'id_model' => 0,
+        'id_model' => '',
         'model_name' => ''
     ];
 
@@ -77,7 +77,6 @@ class CarModelIndex extends Component
     public function render(CarModelRepository $carModelRepository)
     {
         $dataCarModel = $carModelRepository->pagination(
-            $carModelRepository->getColumn(),
             $this->search,
             $this->sortBy,
             $this->sortDirection,
@@ -92,7 +91,6 @@ class CarModelIndex extends Component
     public function allChecked(CarModelRepository $carModelRepository)
     {
         $datas = $carModelRepository->checked(
-            $carModelRepository->getColumn(),
             $this->search,
             $this->sortBy,
             $this->sortDirection,
