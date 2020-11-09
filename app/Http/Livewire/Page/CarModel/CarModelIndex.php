@@ -63,6 +63,11 @@ class CarModelIndex extends Component
         $this->validateOnly($propertyName);
     }
 
+    public function updatingSearch()
+    {
+        $this->resetPage();
+    }
+
     public function resetForm()
     {
         $this->reset(['bind']);
@@ -71,7 +76,7 @@ class CarModelIndex extends Component
     public function render(CarModelRepository $carModelRepository)
     {
         $dataCarModel = $carModelRepository->pagination(
-            (new CarModel)->getVisible(),
+            $carModelRepository->getColumn(),
             $this->search,
             $this->sortBy,
             $this->sortDirection,
@@ -86,14 +91,14 @@ class CarModelIndex extends Component
     public function allChecked(CarModelRepository $carModelRepository)
     {
         $datas = $carModelRepository->checked(
-            (new CarModel)->getVisible(),
+            $carModelRepository->getColumn(),
             $this->search,
             $this->sortBy,
             $this->sortDirection,
             $this->perPageSelected
         );
 
-        $id = (new CarModel)->getKeyName();
+        $id = $carModelRepository->getPrimaryKey();
       
         // Dari Unchecked ke Checked
         if($this->allChecked == true) {

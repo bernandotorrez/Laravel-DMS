@@ -39,8 +39,7 @@ Route::middleware('auth')->group(function() {
 
     Route::get('/car-model', CarModelIndex::class)->name('car-model.index');
 
-    //Route::get('/car-type-model', CarTypeModelIndex::class)->name('car-type-model.index');
-    Route::get('/car-type-model', CarModelIndex::class)->name('car-type-model.index');
+    Route::get('/car-type-model', CarTypeModelIndex::class)->name('car-type-model.index');
 
     Route::get('/tes', function() {
         $data = CarTypeModel::with('model')->get();
