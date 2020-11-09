@@ -18,23 +18,6 @@ class BaseRepository implements BaseInterface
     }
 
     /**
-     * Get Primary Key of the Model
-     */
-    public function getPrimaryKey()
-    {
-        return $this->primaryKey;
-    }
-
-    /**
-     * Get Visible Column of the Model
-     * App\Model, protected $visible = [];
-     */
-    public function getColumn()
-    {
-        return $this->column;
-    }
-
-    /**
      * Get All Data
      * @param array $colummn
      * @return Collection
@@ -97,6 +80,23 @@ class BaseRepository implements BaseInterface
     public function getById(int $id)
     {
         return $this->model->where($this->primaryKey, $id)->get()->first();
+    }
+
+    /**
+     * Get Primary Key of the Model
+     */
+    public function getPrimaryKey()
+    {
+        return $this->primaryKey;
+    }
+
+    /**
+     * Get Visible Column of the Model
+     * App\Model, protected $visible = [];
+     */
+    public function getColumn()
+    {
+        return $this->column;
     }
 
     /**

@@ -64,8 +64,7 @@
                                 <p class=""></p>
 
                                 <form>
-                                    @dump($insertDuplicate)
-                                    @if($insertDuplicate == true)
+                                    @if($insertDuplicate == true || $updateDuplicate == true)
                                     <div class="alert alert-warning"> 
                                         <strong> {{ $bind['type_model_name'] }} </strong> already Exist 
                                     </div>
