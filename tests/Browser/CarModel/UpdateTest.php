@@ -20,9 +20,14 @@ class UpdateTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit('/car-model')
-                    ->clickAtXPath('//*[@id="content"]/div[1]/div/div/div/div/div/table/tbody[1]/tr[1]/td[3]/button[1]')
-                    ->waitForTextIn('#update', 'Update')
-                    ->assertPresent('#update');
+                    ->clickAtXPath('//*[@id="users-table"]/tbody/tr[1]/td[1]/input')
+                    ->pause(2500)
+                    ->click('#editButton');
+
+            $browser->whenAvailable('#exampleModal', function($modal) {
+                $modal->waitForTextIn('#update', 'Update')
+                ->assertPresent('#update');
+            });
         });
     }
 
@@ -48,14 +53,19 @@ class UpdateTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit('/car-model')
-                    ->clickAtXPath('//*[@id="content"]/div[1]/div/div/div/div/div/table/tbody[1]/tr[1]/td[3]/button[1]')
-                    ->waitForTextIn('#update', 'Update')
-                    ->assertPresent('#update')
-                    ->type('#model_name', '12')
-                    ->pause(3000)
-                    ->click('#update')
-                    ->waitForText('The model name must be at least 3 characters.')
-                    ->assertSee('The model name must be at least 3 characters.');
+                    ->clickAtXPath('//*[@id="users-table"]/tbody/tr[1]/td[1]/input')
+                    ->pause(2500)
+                    ->click('#editButton');
+
+            $browser->whenAvailable('#exampleModal', function($modal) {
+                $modal->waitForTextIn('#update', 'Update')
+                ->assertPresent('#update')
+                ->type('#model_name', '12')
+                ->pause(2500)
+                ->click('#update')
+                ->waitForText('The Model Name must be at least 3 Characters')
+                ->assertSee('The Model Name must be at least 3 Characters');
+            });
         });
     }
     // Negative Test
@@ -65,12 +75,17 @@ class UpdateTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit('/car-model')
-                    ->clickAtXPath('//*[@id="content"]/div[1]/div/div/div/div/div/table/tbody[1]/tr[1]/td[3]/button[1]')
-                    ->waitForTextIn('#update', 'Update')
-                    ->assertPresent('#update')
-                    ->pause(3000)
-                    ->assertDontSee('The model name field is required.')
-                    ->assertDontSee('The model name must be at least 3 characters.');
+                    ->clickAtXPath('//*[@id="users-table"]/tbody/tr[1]/td[1]/input')
+                    ->pause(2500)
+                    ->click('#editButton');
+            
+            $browser->whenAvailable('#exampleModal', function($modal) {
+                $modal->waitForTextIn('#update', 'Update')
+                ->assertPresent('#update')
+                ->pause(2500)
+                ->assertDontSee('The Model Name Cant be Empty!')
+                ->assertDontSee('The Model Name must be at least 3 Characters');
+            });
         });
     }
 
@@ -79,13 +94,19 @@ class UpdateTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
                     ->visit('/car-model')
-                    ->clickAtXPath('//*[@id="content"]/div[1]/div/div/div/div/div/table/tbody[1]/tr[1]/td[3]/button[1]')
-                    ->waitForTextIn('#update', 'Update')
-                    ->assertPresent('#update')
-                    ->type('#model_name', Str::random(10))
-                    ->click('#update')
-                    ->waitForText('Update Success!')
-                    ->assertSee('Update Success!');
+                    ->clickAtXPath('//*[@id="users-table"]/tbody/tr[1]/td[1]/input')
+                    ->pause(2500)
+                    ->click('#editButton');
+
+            $browser->whenAvailable('#exampleModal', function($modal) {
+                $modal->waitForTextIn('#update', 'Update')
+                ->assertPresent('#update')
+                ->type('#model_name', Str::random(10))
+                ->click('#update');
+            });
+
+            $browser->waitForText('Update Success!')
+            ->assertSee('Update Success!');
         });
     }
 }

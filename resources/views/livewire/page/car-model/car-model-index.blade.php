@@ -24,11 +24,13 @@
 
                 <button type="button" 
                 class="btn btn-primary mr-4" 
+                id="addButton"
                 wire:click.prevent="addForm"> Add
                 </button>
 
                 <button type="button" 
                 class="btn btn-success mr-4" 
+                id="editButton"
                 wire:click.prevent="editForm"
                 @if(count($checked) != 1) disabled @endif
                 > Edit
@@ -36,6 +38,7 @@
 
                 <button type="button" 
                 class="btn btn-danger" 
+                id="deleteButton"
                 wire:click.prevent="deleteProcess"
                 @if(count($checked) <= 0 ) disabled @endif
                 > Delete
