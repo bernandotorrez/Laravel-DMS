@@ -20,5 +20,10 @@ class CarTypeModelSeeder extends Seeder
         ->count(10)
         ->forOneModel()
         ->create();
+
+        CarTypeModel::factory()
+        ->count(10)
+        ->hasColors()
+        ->create();
     }
 }
