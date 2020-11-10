@@ -52,7 +52,7 @@
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Car Type Model</h5>
+                                <h5 class="modal-title" id="exampleModalLabel">Car Type Colour</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                         viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -67,9 +67,9 @@
                                 <p class=""></p>
 
                                 <form>
-                                    @if($insertDuplicate == true)
+                                    @if($insertDuplicate == true || $updateDuplicate == true)
                                     <div class="alert alert-warning"> 
-                                        <strong> {{ $bind['type_model_name'] }} </strong> already Exist 
+                                        <strong> {{ $bind['colour'] }} </strong> already Exist 
                                     </div>
                                     @endif
 

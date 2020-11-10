@@ -46,6 +46,16 @@ class BaseRepository implements BaseInterface
     }
 
     /**
+     * Check Duplicated Data in Edit Process
+     * @param array $where
+     * @param int $id
+     */
+    public function findDuplicateEdit(array $where, int $id)
+    {
+        return $this->model->where($where)->where($this->primaryKey, '!=', $id)->count();
+    }
+
+    /**
      * Update Data
      * @param int $id
      * @param array $data
@@ -57,7 +67,7 @@ class BaseRepository implements BaseInterface
 
     /**
      * Delete One Data
-     * @param int
+     * @param int $id
      */
     public function delete(int $id)
     {
@@ -66,7 +76,7 @@ class BaseRepository implements BaseInterface
 
     /**
      * Delete Many Data
-     * @param int
+     * @param array $id
      */
     public function massDelete(array $id)
     {
@@ -75,7 +85,7 @@ class BaseRepository implements BaseInterface
 
     /**
      * Get Data By ID
-     * @param int
+     * @param int $id
      */
     public function getById(int $id)
     {

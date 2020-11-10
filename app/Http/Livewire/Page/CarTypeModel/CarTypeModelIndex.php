@@ -24,8 +24,8 @@ class CarTypeModelIndex extends Component
     /**
      * Page Attributes
      */
-    protected string $pageTitle = "Car Model";
-    public bool $is_edit = false, $allChecked = false, $insertDuplicate = false, $updateDuplicate = false;
+    protected string $pageTitle = "Car Type Model";
+    public bool $is_edit = false, $allChecked = false, $insertDuplicate = false;
     public string $insert_status = '', $update_status = '', $delete_status = '', $viewName = 'view_type_model_porsche';
     public array $checked = [];
     
@@ -183,10 +183,10 @@ class CarTypeModelIndex extends Component
             'type_model_name' => ucwords($this->bind['type_model_name'])
         );
 
-        $count = $carTypeModelRepository->findDuplicate($data);
+        $count = $carTypeModelRepository->findDuplicateEdit($data, $this->bind['id_type_model']);
         
         if($count >= 1) {
-            $this->updateDuplicate = true;
+            $this->insertDuplicate = true;
         } else {
             $update = $carTypeModelRepository->update($this->bind['id_type_model'], $data);
 

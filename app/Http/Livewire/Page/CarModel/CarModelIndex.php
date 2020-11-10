@@ -151,7 +151,7 @@ class CarModelIndex extends Component
         $this->insert_status = '';
         $this->update_status = '';
         $this->is_edit = true;
-       
+
         $data = $carModelRepository->getByID($this->checked[0]);
         $this->bind['id_model'] = $data->id_model;
         $this->bind['model_name'] = $data->model_name;
@@ -164,17 +164,24 @@ class CarModelIndex extends Component
         $this->validate();
 
         $data = array('model_name' => ucfirst($this->bind['model_name']));
-        
-        $update = $carModelRepository->update($this->bind['id_model'], $data);
 
-        if($update) {
-            $this->update_status = 'success';
-            $this->is_edit = false;
-            $this->resetForm();
-            $this->emit('closeModal');
+        $count = $carModelRepository->findDuplicateEdit($data, $this->bind['id_model']);
+
+        if($count >= 1) {
+            $this->insertDuplicate = true;
         } else {
-            $this->update_status = 'fail';
+            $update = $carModelRepository->update($this->bind['id_model'], $data);
+
+            if($update) {
+                $this->update_status = 'success';
+                $this->is_edit = false;
+                $this->resetForm();
+                $this->emit('closeModal');
+            } else {
+                $this->update_status = 'fail';
+            }
         }
+        
     }
 
     public function deleteProcess(CarModelRepository $carModelRepository)
