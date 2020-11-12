@@ -43,8 +43,8 @@ class Login extends Page
     public function pressLoginAndSeeEmailRequired(Browser $browser)
     {
         $browser->press('Log In')
-        ->waitForText('The email field is required.')
-        ->assertSee('The email field is required.');
+                ->waitForText('The email field is required.')
+                ->assertSee('The email field is required.');
     }
 
     public function pressLoginAndSeeEmailNotValid(Browser $browser)

@@ -9,6 +9,7 @@ use App\Http\Livewire\Page\CarModel\CarModelIndex;
 use App\Http\Livewire\Page\CarTypeModel\CarTypeModelIndex;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\DatatablesController;
+use App\Http\Livewire\Page\TestDetail\TestDetailIndex;
 use App\Models\CarTypeModel;
 /*
 |--------------------------------------------------------------------------
@@ -40,6 +41,8 @@ Route::middleware('auth')->group(function() {
     Route::get('/car-model', CarModelIndex::class)->name('car-model.index');
 
     Route::get('/car-type-model', CarTypeModelIndex::class)->name('car-type-model.index');
+    
+    Route::get('/test-detail', TestDetailIndex::class)->name('test-detail.index');
 
     Route::get('/tes', function() {
         $data = CarTypeModel::with('oneModel');
