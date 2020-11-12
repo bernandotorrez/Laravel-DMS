@@ -211,5 +211,7 @@ class CarTypeModelIndex extends Component
         } else {
             $this->delete_status = 'fail';
         }
+
+        $this->emit('deleted', $this->delete_status);
     }
 }

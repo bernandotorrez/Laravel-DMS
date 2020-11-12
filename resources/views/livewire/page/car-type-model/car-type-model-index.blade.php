@@ -4,11 +4,11 @@
         <div class="widget-content-area br-4">
             <div class="widget-one">
 
-                @if($delete_status == 'success')
+                <!-- @if($delete_status == 'success')
                 <div class="alert alert-success"> Delete Success! </div>
                 @elseif($delete_status == 'fail')
                 <div class="alert alert-danger"> Delete Failed! </div>
-                @endif
+                @endif -->
 
                 @if($insert_status == 'success')
                 <div class="alert alert-success"> Insert Success! </div>
@@ -39,7 +39,7 @@
                 <button type="button" 
                 class="btn btn-danger" 
                 id="deleteButton"
-                wire:click.prevent="deleteProcess"
+                wire:click.prevent="$emit('triggerDelete')"
                 @if(count($checked) <= 0 ) disabled @endif
                 > Delete
                 </button>
@@ -180,12 +180,21 @@
 
 @push('scripts')
 <script>
-Livewire.on('closeModal', function() {
-    $('#exampleModal').modal('hide')
-})
+Livewire.on('triggerDelete', function () {
 
-Livewire.on('openModal', function() {
-    $('#exampleModal').modal('show')
-})
+        Swal.fire({
+            icon: 'question',
+            title: 'Are You Sure?',
+            text: 'this Record will be deleted!',
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonText: 'Delete!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // call function deleteProcess() in Livewire Controller
+                @this.deleteProcess()
+            }
+        });
+    });
 </script>
 @endpush

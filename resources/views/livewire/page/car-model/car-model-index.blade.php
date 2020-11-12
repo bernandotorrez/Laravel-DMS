@@ -4,11 +4,11 @@
         <div class="widget-content-area br-4">
             <div class="widget-one">
 
-                @if($delete_status == 'success')
+                <!-- @if($delete_status == 'success')
                 <div class="alert alert-success"> Delete Success! </div>
                 @elseif($delete_status == 'fail')
                 <div class="alert alert-danger"> Delete Failed! </div>
-                @endif
+                @endif -->
 
                 @if($insert_status == 'success')
                 <div class="alert alert-success"> Insert Success! </div>
