@@ -39,7 +39,7 @@
                 <button type="button" 
                 class="btn btn-danger" 
                 id="deleteButton"
-                wire:click.prevent="deleteProcess"
+                wire:click.prevent="$emit('triggerDelete')"
                 @if(count($checked) <= 0 ) disabled @endif
                 > Delete
                 </button>
@@ -90,7 +90,9 @@
                                     wire:click.prevent="editProcess" wire:offline.attr="disabled"> Update </button>
                                 @else
                                 <button type="button" class="btn btn-primary" id="submit"
-                                    wire:click.prevent="addProcess" wire:offline.attr="disabled"> Submit </button>
+                                    wire:click.prevent="addProcess" 
+                                    wire:offline.attr="disabled"
+                                    @error('bind.*') disabled @enderror> Submit </button>
                                 @endif
                             </div>
                         </div>
@@ -127,15 +129,7 @@
                             <th width="10%">No</th>
                             <th wire:click="sortBy('model_name')">
                                 <a href="javascript:void(0);">Model Name
-                                    @if($sortBy != 'model_name')
-                                    <i class="fas fa-arrows-alt-v"></i>
-                                    @elseif($sortBy == 'model_name')
-                                        @if($sortDirection == 'asc')
-                                        <i class="fas fa-sort-alpha-up"></i>
-                                        @elseif($sortDirection == 'desc')
-                                        <i class="fas fa-sort-alpha-down-alt"></i>
-                                        @endif
-                                    @endif
+                                    @include('livewire.datatable-icon', ['field' => 'model_name'])
                                 </a>
                             </th>
                         </thead>
@@ -169,12 +163,21 @@
 
 @push('scripts')
 <script>
-Livewire.on('closeModal', function() {
-    $('#exampleModal').modal('hide')
-})
+    Livewire.on('triggerDelete', function () {
 
-Livewire.on('openModal', function() {
-    $('#exampleModal').modal('show')
-})
+        Swal.fire({
+            icon: 'question',
+            title: 'Are You Sure?',
+            text: 'this Record will be deleted!',
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonText: 'Delete!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // call function deleteProcess() in Livewire Controller
+                @this.deleteProcess()
+            }
+        });
+    });
 </script>
 @endpush

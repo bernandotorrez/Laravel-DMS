@@ -14,6 +14,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/datatables.min.css') }}"/>
     <link href="{{ asset('assets/css/elements/custom-pagination.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/css/components/custom-modal.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('assets/css/sweetalert2/sweetalert2.min.css') }}" rel="stylesheet" type="text/css" />
 
     <link href="{{ mix('css/app.css') }}" rel="stylesheet" type="text/css" />
 
@@ -57,10 +58,37 @@
 
     <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
     @livewireScripts
-    <script src="https://cdn.jsdelivr.net/gh/livewire/turbolinks@v0.1.x/dist/livewire-turbolinks.js" data-turbolinks-eval="false"></script>
+    <script src="{{ asset('assets/js/turbolink/livewire-turbolinks.js') }}" data-turbolinks-eval="false"></script>
     <script src="{{ mix('js/app.js') }}"></script>
+    <script src="{{ asset('assets/js/sweetalert2/sweetalert2.min.js') }}"></script>
 
     @stack('scripts')
+    <script>
+        Livewire.on('closeModal', function () {
+            $('#exampleModal').modal('hide')
+        })
+
+        Livewire.on('openModal', function () {
+            $('#exampleModal').modal('show')
+        })
+
+        Livewire.on('deleted', function (deleteStatus) {
+
+            if (deleteStatus == 'success') {
+                Swal.fire(
+                    'Success!',
+                    'Delete Data Success!',
+                    'success'
+                )
+            } else {
+                Swal.fire(
+                    'Failed!',
+                    'Delete Data Failed!',
+                    'error'
+                )
+            }
+        })
+        </script>
     <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
 
 </head>

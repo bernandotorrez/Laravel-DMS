@@ -120,6 +120,7 @@ class CarModelIndex extends Component
         $this->is_edit = false;
         $this->resetForm();
 
+        //$this->dispatchBrowserEvent('swal');
         $this->emit('openModal');
     }
 
@@ -194,5 +195,7 @@ class CarModelIndex extends Component
         } else {
             $this->delete_status = 'fail';
         }
+
+        $this->emit('deleted', $this->delete_status);
     }
 }

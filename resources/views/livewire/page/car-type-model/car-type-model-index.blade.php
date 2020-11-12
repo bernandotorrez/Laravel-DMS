@@ -140,28 +140,12 @@
                             <th width="10%">No</th>
                             <th wire:click="sortBy('model_name')">
                                 <a href="javascript:void(0);">Model Name
-                                    @if($sortBy != 'model_name')
-                                    <i class="fas fa-arrows-alt-v"></i>
-                                    @elseif($sortBy == 'model_name')
-                                        @if($sortDirection == 'asc')
-                                        <i class="fas fa-sort-alpha-up"></i>
-                                        @elseif($sortDirection == 'desc')
-                                        <i class="fas fa-sort-alpha-down-alt"></i>
-                                        @endif
-                                    @endif
+                                    @include('livewire.datatable-icon', ['field' => 'model_name'])
                                 </a>
                             </th>
                             <th wire:click="sortBy('type_model_name')">
                                 <a href="javascript:void(0);">Type Model Name
-                                    @if($sortBy != 'type_model_name')
-                                    <i class="fas fa-arrows-alt-v"></i>
-                                    @elseif($sortBy == 'type_model_name')
-                                        @if($sortDirection == 'asc')
-                                        <i class="fas fa-sort-alpha-up"></i>
-                                        @elseif($sortDirection == 'desc')
-                                        <i class="fas fa-sort-alpha-down-alt"></i>
-                                        @endif
-                                    @endif
+                                    @include('livewire.datatable-icon', ['field' => 'type_model_name'])
                                 </a>
                             </th>
                         </thead>
