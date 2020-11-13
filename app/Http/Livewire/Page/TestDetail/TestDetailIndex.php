@@ -8,13 +8,13 @@ class TestDetailIndex extends Component
 {
     protected string $pageTitle = 'Test Detail';
     public array $detailData = [];
-    public int $grandTotal = 0;
+    public $grandTotal = 0;
 
     protected $rules = [
         'detailData.*.item_type' => 'required|string|min:3',
         'detailData.*.description' => 'required|string|min:3',
         'detailData.*.qty' => 'required|numeric|min:1|max:999',
-        'detailData.*.estimation_price' => 'required|numeric|min:1',
+        'detailData.*.estimation_price' => 'required|string|min:1',
     ];
 
     protected $messages = [
@@ -35,9 +35,39 @@ class TestDetailIndex extends Component
 
         foreach($this->detailData as $key => $data)
         {
-            $total_estimation_price = $this->detailData[$key]['qty'] * $this->detailData[$key]['estimation_price'];
-            $this->detailData[$key]['total_estimation_price'] = $total_estimation_price;
+            $this->detailData[$key]['estimation_price'] = $this->currencyFormat($this->detailData[$key]['estimation_price']);
         }
+
+        $this->sumGrandTotal();
+    }
+
+    public function sumGrandTotal()
+    {
+        $this->grandTotal = 0;
+
+        foreach($this->detailData as $key => $data)
+        {
+            $total_estimation_price = $this->detailData[$key]['qty'] * $this->removeFormat($this->detailData[$key]['estimation_price']);
+            $this->detailData[$key]['total_estimation_price'] = $this->currencyFormat($total_estimation_price,2,',','.');
+
+            $this->grandTotal += $total_estimation_price;
+        }
+
+        $this->grandTotal = $this->currencyFormat($this->grandTotal,2,',','.');
+    }
+
+    private function removeFormat($value)
+    {
+        $explode = explode(',', $value);
+        $angka = $explode[0];
+
+        $text = str_replace(".", "", $angka);
+        return $text;
+    }
+
+    private function currencyFormat($value)
+    {
+        return number_format($value,2,',','.');
     }
 
     public function mount()
@@ -59,7 +89,7 @@ class TestDetailIndex extends Component
         $end = end($this->detailData);
 
         $data = array(
-            'no' => intval($end['no'] + 1),
+            'no' => floatval($end['no'] + 1),
             'item_type' => '',
             'description' => '',
             'qty' => 1,
@@ -73,6 +103,7 @@ class TestDetailIndex extends Component
     public function deleteDetail($key)
     {
         unset($this->detailData[$key]);
+        $this->sumGrandTotal();
     }
 
     public function render()
