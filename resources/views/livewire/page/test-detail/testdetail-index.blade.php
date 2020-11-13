@@ -49,7 +49,10 @@
                                 </td>
                                 <td>
                                     <input type="text" class="form-control" min="1"
-                                    wire:model.lazy="detailData.{{$key}}.estimation_price">
+                                    id="estimation-price"
+                                    onchange="formatRupiah(this.value)"
+                                    wire:model.lazy="detailData.{{$key}}.estimation_price"
+                                    >
                                     @error('detailData.'.$key.'.estimation_price') <span class="error">{{ $message }}</span>
                                         @enderror
                                 </td>
@@ -105,8 +108,13 @@ function formatRupiah(angka, prefix){
 				rupiah += separator + ribuan.join('.');
 			}
  
-			rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
-			return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
+            rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+            var callback = prefix == undefined ? rupiah : (rupiah ? rupiah : '')
+
+            var element = document.getElementById('estimation-price')
+            element.value = callback;
+
+			return callback;
 		}
 </script>
 @endpush

@@ -32,12 +32,6 @@ class TestDetailIndex extends Component
     public function updated($propertyName)
     {
         $this->validateOnly($propertyName);
-
-        foreach($this->detailData as $key => $data)
-        {
-            $this->detailData[$key]['estimation_price'] = $this->currencyFormat($this->detailData[$key]['estimation_price']);
-        }
-
         $this->sumGrandTotal();
     }
 
@@ -47,7 +41,7 @@ class TestDetailIndex extends Component
 
         foreach($this->detailData as $key => $data)
         {
-            $total_estimation_price = $this->detailData[$key]['qty'] * $this->removeFormat($this->detailData[$key]['estimation_price']);
+            $total_estimation_price = floatval($this->detailData[$key]['qty'] * $this->removeFormat($this->detailData[$key]['estimation_price']));
             $this->detailData[$key]['total_estimation_price'] = $this->currencyFormat($total_estimation_price,2,',','.');
 
             $this->grandTotal += $total_estimation_price;
@@ -58,10 +52,7 @@ class TestDetailIndex extends Component
 
     private function removeFormat($value)
     {
-        $explode = explode(',', $value);
-        $angka = $explode[0];
-
-        $text = str_replace(".", "", $angka);
+        $text = str_replace(".", "", $value);
         return $text;
     }
 
