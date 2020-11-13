@@ -49,8 +49,8 @@
                                 </td>
                                 <td>
                                     <input type="text" class="form-control" min="1"
-                                    id="estimation-price"
-                                    onchange="formatRupiah(this.value)"
+                                    id="estimation-price.{{$key}}"
+                                    onchange="formatRupiah(this.value, '', {{ $key }})"
                                     wire:model.lazy="detailData.{{$key}}.estimation_price"
                                     >
                                     @error('detailData.'.$key.'.estimation_price') <span class="error">{{ $message }}</span>
@@ -87,34 +87,6 @@
 
 @push('scripts')
 <script>
-Livewire.on('changeCurrencyFormat', function() {
-    var grandTotalEl = document.getElementById('grandtotal')
-    var valueGrandTotal = grandTotalEl.value
 
-    grandTotalEl.value = valueGrandTotal
-
-})
-
-function formatRupiah(angka, prefix){
-			var number_string = angka.replace(/[^,\d]/g, '').toString(),
-			split   		= number_string.split(','),
-			sisa     		= split[0].length % 3,
-			rupiah     		= split[0].substr(0, sisa),
-			ribuan     		= split[0].substr(sisa).match(/\d{3}/gi);
- 
-			// tambahkan titik jika yang di input sudah menjadi angka ribuan
-			if(ribuan){
-				separator = sisa ? '.' : '';
-				rupiah += separator + ribuan.join('.');
-			}
- 
-            rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
-            var callback = prefix == undefined ? rupiah : (rupiah ? rupiah : '')
-
-            var element = document.getElementById('estimation-price')
-            element.value = callback;
-
-			return callback;
-		}
 </script>
 @endpush

@@ -88,7 +88,39 @@
                 )
             }
         })
-        </script>
+
+        
+    function formatRupiah(angka, prefix, id) {
+        var number_string = angka.replace(/[^,\d]/g, '').toString(),
+            split = number_string.split(','),
+            sisa = split[0].length % 3,
+            rupiah = split[0].substr(0, sisa),
+            ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+        // tambahkan titik jika yang di input sudah menjadi angka ribuan
+        if (ribuan) {
+            separator = sisa ? '.' : '';
+            rupiah += separator + ribuan.join('.');
+        }
+
+        rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+        var callback = prefix == '' ? rupiah : (rupiah ? rupiah : '')
+
+        var element = document.getElementById('estimation-price.'+id)
+        element.value = callback;
+
+        return callback;
+    }
+
+    function isNumberKey(e) {
+    var charCode = (e.which) ? e.which : e.keyCode;
+		if (charCode != 44 && charCode != 45 && charCode != 46 && charCode > 31 && (charCode < 48 || charCode > 57)) {
+			return false;
+		} else {
+			return true;
+		}
+    }
+    </script>
     <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
 
 </head>
