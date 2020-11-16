@@ -7,6 +7,9 @@ use App\Repository\Eloquent\CarTypeModelRepository;
 use App\Traits\WithSorting;
 use Livewire\Component;
 use Livewire\WithPagination;
+use App\Models\Cache as CacheModel;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 class CarTypeModelIndex extends Component
 {
@@ -81,13 +84,19 @@ class CarTypeModelIndex extends Component
         CarModelRepository $carModelRepository
     )
     {
-        $dataCarTypeModel = $carTypeModelRepository->viewPagination(
-            $this->viewName,
-            $this->search,
-            $this->sortBy,
-            $this->sortDirection,
-            $this->perPageSelected
-        );
+        $cache_name = 'car-type-model-index-page-'.$this->page.'-pageselected-'.$this->perPageSelected.'-search-'.$this->search;
+        $cache_name .= '-sortby-'.$this->sortBy.'-sortdirection-'.$this->sortDirection.'-user-'.Auth::id();
+
+        $dataCarTypeModel = Cache::remember($cache_name, 60, function () use ($carTypeModelRepository, $cache_name) {
+            CacheModel::firstOrCreate(['cache_name' => $cache_name, 'id_user' => Auth::id()]);
+            return $carTypeModelRepository->viewPagination(
+                $this->viewName,
+                $this->search,
+                $this->sortBy,
+                $this->sortDirection,
+                $this->perPageSelected
+            );
+        });
 
         $dataCarModel = $carModelRepository->all(['id_model', 'model_name']);
 
@@ -154,6 +163,8 @@ class CarTypeModelIndex extends Component
                 $this->insert_status = 'success';
                 $this->resetForm();
                 $this->emit('closeModal');
+
+                $this->deleteCache();
             } else {
                 $this->insert_status = 'fail';
             }
@@ -195,6 +206,8 @@ class CarTypeModelIndex extends Component
                 $this->is_edit = false;
                 $this->resetForm();
                 $this->emit('closeModal');
+
+                $this->deleteCache();
             } else {
                 $this->update_status = 'fail';
             }
@@ -208,10 +221,24 @@ class CarTypeModelIndex extends Component
         if($delete) {
             $this->delete_status = 'success';
             $this->resetForm();
+
+            $this->deleteCache();
         } else {
             $this->delete_status = 'fail';
         }
 
         $this->emit('deleted', $this->delete_status);
+    }
+
+    private function deleteCache()
+    {
+        $dataCache = CacheModel::where('id_user', Auth::id())->get();
+
+        foreach($dataCache as $cache)
+        {
+            Cache::forget($cache->cache_name);
+        }
+
+        CacheModel::where('id_user', Auth::id())->delete();
     }
 }
