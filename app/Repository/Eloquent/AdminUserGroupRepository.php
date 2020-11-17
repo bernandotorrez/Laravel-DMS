@@ -1,16 +1,13 @@
 <?php
 
 namespace App\Repository\Eloquent;
-
-use App\Models\CarModel;
 use App\Repository\Eloquent\BaseRepository;
+use App\Models\UserGroup;
 
-class CarModelRepository extends BaseRepository
+class AdminUserGroupRepository extends BaseRepository
 {
-    public function __construct(CarModel $model)
+    public function __construct(UserGroup $model)
     {
         parent::__construct($model);
     }
-
-    
 }

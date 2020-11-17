@@ -9,7 +9,7 @@ class UserRepository extends BaseRepository
 {
     public function __construct(User $model)
     {
-        parent::__construct($model, (new $model)->getKeyName(), (new $model)->getSearchableColumn());
+        parent::__construct($model);
     }
 
     

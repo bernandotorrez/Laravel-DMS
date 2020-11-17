@@ -9,22 +9,24 @@ class BaseRepository implements BaseInterface
     protected $model;
     protected $primaryKey;
     protected $searchableColumn;
+    protected $visibleColumn;
 
-    public function __construct($model, $primaryKey, $searchableColumn)
+    public function __construct($model)
     {
-        $this->primaryKey = $primaryKey;
         $this->model = $model;
-        $this->searchableColumn = $searchableColumn;
+        $this->primaryKey = (new $model)->getKeyName();
+        $this->searchableColumn = (new $model)->getSearchableColumn();
+        $this->visibleColumn = (new $model)->getVisible();
     }
 
     /**
      * Get All Data
-     * @param array $colummn
+     * @param array $column
      * @return Collection
      */
-    public function all($column = ['*'])
+    public function all()
     {
-        return $this->model->all($column);
+        return $this->model->all($this->visibleColumn);
     }
 
     /**

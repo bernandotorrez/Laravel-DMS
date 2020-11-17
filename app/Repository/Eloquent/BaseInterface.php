@@ -9,6 +9,6 @@ interface BaseInterface
     public function update(int $id, array $data);
     public function delete(int $id);
     public function massDelete(array $id);
-    public function all(array $column = ['*']);
+    public function all();
     public function getById(int $id);
 }

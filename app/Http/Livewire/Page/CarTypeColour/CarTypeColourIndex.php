@@ -104,8 +104,8 @@ class CarTypeColourIndex extends Component
             );
         });
 
-        $dataCarModel = $carModelRepository->all(['id_model', 'model_name']);
-        $dataCarTypeModel = $carTypeModelRepository->all(['id_type_model', 'type_model_name']);
+        $dataCarModel = $carModelRepository->all();
+        $dataCarTypeModel = $carTypeModelRepository->all();
 
         return view('livewire.page.car-type-colour.car-type-colour-index', [
                     'car_type_colour' => $dataCarTypeColour,

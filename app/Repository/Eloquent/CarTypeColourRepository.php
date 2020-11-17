@@ -8,6 +8,6 @@ class CarTypeColourRepository extends BaseRepository
 {
     public function __construct(CarTypeColour $model)
     {
-        parent::__construct($model, (new $model)->getKeyName(), (new $model)->getSearchableColumn());
+        parent::__construct($model);
     }
 }

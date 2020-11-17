@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Http\Livewire\Page\CarTypeModel;
+namespace App\Http\Livewire\Page\Admin\UserGroup;
 
-use App\Repository\Eloquent\CarModelRepository;
-use App\Repository\Eloquent\CarTypeModelRepository;
-use App\Traits\WithSorting;
+use App\Models\UserGroup;
+use App\Repository\Eloquent\AdminUserGroupRepository;
 use Livewire\Component;
 use Livewire\WithPagination;
-use App\Models\Cache as CacheModel;
+use App\Traits\WithSorting;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
+use App\Models\Cache as CacheModel;
 
-class CarTypeModelIndex extends Component
+class UserGroupIndex extends Component
 {
     use WithPagination;
     use WithSorting;
@@ -27,9 +27,9 @@ class CarTypeModelIndex extends Component
     /**
      * Page Attributes
      */
-    protected string $pageTitle = "Car Type Model";
+    protected string $pageTitle = "Admin User Group";
     public bool $is_edit = false, $allChecked = false, $insertDuplicate = false;
-    public string $insert_status = '', $update_status = '', $delete_status = '', $viewName = 'view_type_model_porsche';
+    public string $insert_status = '', $update_status = '', $delete_status = '';
     public array $checked = [];
     
     protected $queryString = [
@@ -38,28 +38,26 @@ class CarTypeModelIndex extends Component
     ];
     
     public $bind = [
-        'id_model' => '',
-        'type_model_name' => ''
+        'id_user_group' => '',
+        'user_group' => ''
     ];
 
     /**
      * Validation Attributes
      */
     protected $rules = [
-        'bind.id_model' => 'required',
-        'bind.type_model_name' => 'required|min:3|max:50'
+        'bind.user_group' => 'required|min:3|max:50'
     ];
 
     protected $messages = [
-        'bind.id_model.required' => 'The Model Name cant be Empty!',
-        'bind.type_model_name.required' => 'The Type Model Name Cant be Empty!',
-        'bind.type_model_name.min' => 'The Type Model Name must be at least 3 Characters',
-        'bind.type_model_name.max' => 'The Type Model Name Cant be maximal 50 Characters',
+        'bind.user_group.required' => 'The User Group Cant be Empty!',
+        'bind.user_group.min' => 'The User Group must be at least 3 Characters',
+        'bind.user_group.max' => 'The User Group Cant be maximal 50 Characters',
     ];
 
     public function mount()
     {
-        $this->sortBy = 'type_model_name';
+        $this->sortBy = 'user_group';
         $this->fill(request()->only('search', 'page'));
     }
 
@@ -79,45 +77,36 @@ class CarTypeModelIndex extends Component
         $this->reset(['bind']);
     }
 
-    public function render(
-        CarTypeModelRepository $carTypeModelRepository,
-        CarModelRepository $carModelRepository
-    )
+    public function render(AdminUserGroupRepository $adminUserGroupRepository)
     {
-        $cache_name = 'car-type-model-index-page-'.$this->page.'-pageselected-'.$this->perPageSelected.'-search-'.$this->search;
+        $cache_name = 'admin-user-group-index-page-'.$this->page.'-pageselected-'.$this->perPageSelected.'-search-'.$this->search;
         $cache_name .= '-sortby-'.$this->sortBy.'-sortdirection-'.$this->sortDirection.'-user-'.Auth::id();
 
-        $dataCarTypeModel = Cache::remember($cache_name, 60, function () use ($carTypeModelRepository, $cache_name) {
+        $dataUserGroup = Cache::remember($cache_name, 60, function () use ($adminUserGroupRepository, $cache_name) {
             CacheModel::firstOrCreate(['cache_name' => $cache_name, 'id_user' => Auth::id()]);
-            return $carTypeModelRepository->viewPagination(
-                $this->viewName,
+            return $adminUserGroupRepository->pagination(
                 $this->search,
                 $this->sortBy,
                 $this->sortDirection,
                 $this->perPageSelected
             );
         });
-
-        $dataCarModel = $carModelRepository->all();
-
-        return view('livewire.page.car-type-model.car-type-model-index', [
-                    'car_type_model' => $dataCarTypeModel,
-                    'car_model' => $dataCarModel
-                ])
-                ->layout('layouts.app', array('title' => $this->pageTitle));
+        
+        return view('livewire.page.admin.user-group.user-group-index', [
+            'dataUserGroup' => $dataUserGroup
+        ])->layout('layouts.app', ['title' => $this->pageTitle]);
     }
 
-    public function allChecked(CarTypeModelRepository $carTypeModelRepository)
+    public function allChecked(AdminUserGroupRepository $adminUserGroupRepository)
     {
-        $datas = $carTypeModelRepository->viewChecked(
-            $this->viewName,
+        $datas = $adminUserGroupRepository->checked(
             $this->search,
             $this->sortBy,
             $this->sortDirection,
             $this->perPageSelected
         );
 
-        $id = $carTypeModelRepository->getPrimaryKey();
+        $id = $adminUserGroupRepository->getPrimaryKey();
       
         // Dari Unchecked ke Checked
         if($this->allChecked == true) {
@@ -143,21 +132,20 @@ class CarTypeModelIndex extends Component
         $this->emit('openModal');
     }
 
-    public function addProcess(CarTypeModelRepository $carTypeModelRepository)
+    public function addProcess(AdminUserGroupRepository $adminUserGroupRepository)
     {
         $this->validate();
 
         $data = array(
-            'id_model' => $this->bind['id_model'],
-            'type_model_name' => ucwords($this->bind['type_model_name'])
+            'user_group' => $this->bind['user_group']
         );
 
-        $count = $carTypeModelRepository->findDuplicate($data);
+        $count = $adminUserGroupRepository->findDuplicate($data);
         
         if($count >= 1) {
             $this->insertDuplicate = true;
         } else {
-            $insert = $carTypeModelRepository->create($data);
+            $insert = $adminUserGroupRepository->create($data);
 
             if($insert) {
                 $this->insert_status = 'success';
@@ -171,35 +159,34 @@ class CarTypeModelIndex extends Component
         }
     }
 
-    public function editForm(CarTypeModelRepository $carTypeModelRepository)
+    public function editForm(AdminUserGroupRepository $adminUserGroupRepository)
     {
         $this->insert_status = '';
         $this->update_status = '';
         $this->is_edit = true;
        
-        $data = $carTypeModelRepository->getByID($this->checked[0]);
-        $this->bind['id_type_model'] = $data->id_type_model;
-        $this->bind['id_model'] = $data->id_model;
-        $this->bind['type_model_name'] = $data->type_model_name;
+        $data = $adminUserGroupRepository->getByID($this->checked[0]);
+        $this->bind['id_user_group'] = $data->id_user_group;
+        $this->bind['user_group'] = $data->user_group;
 
         $this->emit('openModal');
     }
 
-    public function editProcess(CarTypeModelRepository $carTypeModelRepository)
+    public function editProcess(AdminUserGroupRepository $adminUserGroupRepository)
     {
         $this->validate();
 
         $data = array(
-            'id_model' => $this->bind['id_model'],
-            'type_model_name' => ucwords($this->bind['type_model_name'])
+            'id_user_group' => $this->bind['id_user_group'],
+            'user_group' => $this->bind['user_group']
         );
 
-        $count = $carTypeModelRepository->findDuplicateEdit($data, $this->bind['id_type_model']);
+        $count = $adminUserGroupRepository->findDuplicateEdit($data, $this->bind['id_user_group']);
         
         if($count >= 1) {
             $this->insertDuplicate = true;
         } else {
-            $update = $carTypeModelRepository->update($this->bind['id_type_model'], $data);
+            $update = $adminUserGroupRepository->update($this->bind['id_user_group'], $data);
 
             if($update) {
                 $this->update_status = 'success';
@@ -214,9 +201,9 @@ class CarTypeModelIndex extends Component
         }  
     }
 
-    public function deleteProcess(CarTypeModelRepository $carTypeModelRepository)
+    public function deleteProcess(AdminUserGroupRepository $adminUserGroupRepository)
     {
-        $delete = $carTypeModelRepository->massDelete($this->checked);
+        $delete = $adminUserGroupRepository->massDelete($this->checked);
 
         if($delete) {
             $this->delete_status = 'success';
