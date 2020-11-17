@@ -140,50 +140,40 @@
                             <th width="10%">No</th>
                             <th wire:click="sortBy('model_name')">
                                 <a href="javascript:void(0);">Model Name
-                                    @if($sortBy != 'model_name')
-                                    <i class="fas fa-arrows-alt-v"></i>
-                                    @elseif($sortBy == 'model_name')
-                                        @if($sortDirection == 'asc')
-                                        <i class="fas fa-sort-alpha-up"></i>
-                                        @elseif($sortDirection == 'desc')
-                                        <i class="fas fa-sort-alpha-down-alt"></i>
-                                        @endif
-                                    @endif
+                                @include('livewire.datatable-icon', ['field' => 'model_name'])
                                 </a>
                             </th>
                             <th wire:click="sortBy('type_model_name')">
                                 <a href="javascript:void(0);">Type Model Name
-                                    @if($sortBy != 'type_model_name')
-                                    <i class="fas fa-arrows-alt-v"></i>
-                                    @elseif($sortBy == 'type_model_name')
-                                        @if($sortDirection == 'asc')
-                                        <i class="fas fa-sort-alpha-up"></i>
-                                        @elseif($sortDirection == 'desc')
-                                        <i class="fas fa-sort-alpha-down-alt"></i>
-                                        @endif
-                                    @endif
+                                @include('livewire.datatable-icon', ['field' => 'type_model_name'])
+                                </a>
+                            </th>
+                            <th wire:click="sortBy('colour')">
+                                <a href="javascript:void(0);">Colour
+                                @include('livewire.datatable-icon', ['field' => 'colour'])
                                 </a>
                             </th>
                         </thead>
                         <tbody>
-                            @foreach($car_type_model as $data)
+                            @foreach($car_type_colour as $data)
                             <tr>
                                 <td>
                                     <input type="checkbox" 
-                                    value="{{ $data->id_type_model }}" 
+                                    value="{{ $data->id_type_colour }}" 
                                     class="new-control-input"
                                     wire:model="checked">
                                 </td>
-                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $data->id_type_colour }}</td>
                                 <td>{{ $data->model_name }}</td>
                                 <td>{{ $data->type_model_name }}</td>
+                                <td>{{ $data->colour }}</td>
                             </tr>
                             @endforeach
                         </tbody>
                     </table>
 
                     <div class="d-flex justify-content-center">
-                        {{ $car_type_model->links('livewire.pagination-links') }}
+                        {{ $car_type_colour->links('livewire.pagination-links') }}
                     </div>
 
                 </div>

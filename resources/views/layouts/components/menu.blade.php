@@ -44,7 +44,7 @@
             </li>
 
             <li class="menu single-menu 
-                {{ Request::is('car-model') || Request::is('car-type-model') ? 'active' : ''}}
+                {{ Request::is('car-model') || Request::is('car-type-model') || Request::is('car-type-colour') ? 'active' : ''}}
             ">
                 <a href="#starter-kit" data-toggle="collapse" aria-expanded="true" class="dropdown-toggle autodroprown">
                     <div class="">
@@ -69,6 +69,9 @@
                     </li>
                     <li class="{{ Request::is('car-type-model') ? 'active' : '' }}">
                         <a href="{{ url()->route('car-type-model.index') }}"> Car Type Model </a>
+                    </li>
+                    <li class="{{ Request::is('car-type-colour') ? 'active' : '' }}">
+                        <a href="{{ url()->route('car-type-colour.index') }}"> Car Type Colour </a>
                     </li>
                 </ul>
             </li>

@@ -7,6 +7,7 @@ use App\Http\Livewire\Page\Login\LoginIndex;
 use App\Http\Livewire\Page\Register\RegisterIndex;
 use App\Http\Livewire\Page\CarModel\CarModelIndex;
 use App\Http\Livewire\Page\CarTypeModel\CarTypeModelIndex;
+use App\Http\Livewire\Page\CarTypeColour\CarTypeColourIndex;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\DatatablesController;
 use App\Http\Livewire\Page\TestDetail\TestDetailIndex;
@@ -41,6 +42,8 @@ Route::middleware('auth')->group(function() {
     Route::get('/car-model', CarModelIndex::class)->name('car-model.index');
 
     Route::get('/car-type-model', CarTypeModelIndex::class)->name('car-type-model.index');
+
+    Route::get('/car-type-colour', CarTypeColourIndex::class)->name('car-type-colour.index');
     
     Route::get('/test-detail', TestDetailIndex::class)->name('test-detail.index');
 
