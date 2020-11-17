@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Models\UserGroup;
 
 class User extends Authenticatable
 {
@@ -40,5 +41,10 @@ class User extends Authenticatable
     public function getSearchableColumn()
     {
         return $this->searchableColumn;
+    }
+
+    public function oneUserGroup()
+    {
+        return $this->belongsTo(UserGroup::class, 'id_user_group');
     }
 }
