@@ -27,7 +27,7 @@ class UserGroupIndex extends Component
     /**
      * Page Attributes
      */
-    protected string $pageTitle = "Admin User Group";
+    public string $pageTitle = "Admin User Group";
     public bool $is_edit = false, $allChecked = false, $insertDuplicate = false;
     public string $insert_status = '', $update_status = '', $delete_status = '';
     public array $checked = [];

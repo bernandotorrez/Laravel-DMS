@@ -59,10 +59,10 @@ class BaseRepository implements BaseInterface
 
     /**
      * Update Data
-     * @param int $id
+     * @param string $id
      * @param array $data
      */
-    public function update(int $id, array $data)
+    public function update(string $id, array $data)
     {
         return $this->model->where($this->primaryKey, $id)->update($data);
     }

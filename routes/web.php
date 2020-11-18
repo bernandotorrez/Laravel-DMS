@@ -9,6 +9,7 @@ use App\Http\Livewire\Page\CarModel\CarModelIndex;
 use App\Http\Livewire\Page\CarTypeModel\CarTypeModelIndex;
 use App\Http\Livewire\Page\CarTypeColour\CarTypeColourIndex;
 use App\Http\Livewire\Page\Admin\UserGroup\UserGroupIndex;
+use App\Http\Livewire\Page\Admin\UserAccount\UserAccountIndex;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Livewire\Page\TestDetail\TestDetailIndex;
 use App\Models\CarTypeModel;
@@ -49,9 +50,9 @@ Route::middleware('auth')->group(function() {
 
     Route::prefix('admin')->group(function() {
         Route::get('user-group', UserGroupIndex::class)->name('admin.user-group.index');
+        Route::get('user-account', UserAccountIndex::class)->name('admin.user-account.index');
     });
     
-
     Route::get('/tes', function() {
         $data = CarTypeModel::with('oneModel');
         

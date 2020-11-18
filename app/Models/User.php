@@ -7,10 +7,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Models\UserGroup;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable
 {
     use HasFactory, Notifiable;
+    use SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -36,7 +38,7 @@ class User extends Authenticatable
 
     protected $primaryKey = 'id';
     protected $visible = ['id', 'name', 'email', 'no_hp', 'status'];
-    protected $searchableColumn = ['id', 'name', 'email', 'no_hp', 'status'];
+    protected $searchableColumn = ['id', 'name', 'email', 'no_hp', 'user_group'];
 
     public function getSearchableColumn()
     {

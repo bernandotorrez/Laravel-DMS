@@ -49,7 +49,7 @@
                 <!-- Modal -->
                 <div wire:ignore.self class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
                     aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
+                    <div class="modal-dialog modal-lg" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="exampleModalLabel">{{ $pageTitle }}</h5>
@@ -65,15 +65,67 @@
                             <div class="modal-body">
                                 <form>
                                     @if($insertDuplicate == true)
-                                    <div class="alert alert-warning"> <strong> {{ $bind['user_group'] }} </strong> already Exist </div>
+                                    <div class="alert alert-warning"> <strong> {{ $bind['email'] }} </strong> already Exist </div>
                                     @endif
 
-                                    <div class="form-group mb-4">
-                                        <label for="model_name">User Group</label>
-                                        <input type="text" class="form-control" id="user_group" maxlength="50"
-                                            placeholder="Example : admin001" wire:model.debounce.500ms="bind.user_group">
-                                        @error('bind.user_group') <span class="error">{{ $message }}</span>
-                                        @enderror
+                                    <div class="row mb-4">
+                                        <div class="col">
+                                            <label for="model_name">Name</label>
+                                            <input type="text" class="form-control" id="name" maxlength="100"
+                                                placeholder="Name" wire:model.debounce.500ms="bind.name">
+                                            @error('bind.name') <span class="error">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                        <div class="col">
+                                            <label for="model_name">Email</label>
+                                            <input type="text" class="form-control" id="email" maxlength="150" autocomplete="off"
+                                                placeholder="Example : tes@gmail.com" wire:model.debounce.500ms="bind.email">
+                                            @error('bind.email') <span class="error">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-4">
+                                        <div class="col">
+                                            <label for="model_name">Password</label>
+                                            <input type="password" class="form-control" id="password" maxlength="100"
+                                                autocomplete="off" placeholder="Password" wire:model.debounce.500ms="bind.password">
+                                            @error('bind.password') <span class="error">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                        <div class="col">
+                                            <label for="model_name">No HP</label>
+                                            <input type="text" class="form-control" id="no_hp" maxlength="15"
+                                                placeholder="No HP" wire:model.debounce.500ms="bind.no_hp">
+                                            @error('bind.no_hp') <span class="error">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-4">
+                                        <div class="col">
+                                            <label for="model_name">Level</label>
+                                            <select class="form-control" id="level" maxlength="50"
+                                                placeholder="Level" wire:model.lazy="bind.level">
+                                                <option value="">- Choose Level -</option>
+                                                <option value="Admin">Admin</option>
+                                                <option value="User">User</option>
+                                            </select>
+                                            @error('bind.level') <span class="error">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                        <div class="col">
+                                            <label for="model_name">User Group</label>
+                                            <select class="form-control" id="id_user_group" maxlength="50"
+                                                wire:model.lazy="bind.id_user_group">
+                                                <option value="">- Choose Level -</option>
+                                                @foreach($dataUserGroup as $data)
+                                                    <option value="{{ $data->id_user_group }}">{{ $data->user_group }}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('bind.id_user_group') <span class="error">{{ $message }}</span>
+                                            @enderror
+                                        </div>
                                     </div>
 
                                 </form>
@@ -123,6 +175,26 @@
                                 wire:click="allChecked">
                             </th>
                             <th width="10%">No</th>
+                            <th wire:click="sortBy('name')">
+                                <a href="javascript:void(0);">Name
+                                    @include('livewire.datatable-icon', ['field' => 'name'])
+                                </a>
+                            </th>
+                            <th wire:click="sortBy('email')">
+                                <a href="javascript:void(0);">Email
+                                    @include('livewire.datatable-icon', ['field' => 'email'])
+                                </a>
+                            </th>
+                            <th wire:click="sortBy('no_hp')">
+                                <a href="javascript:void(0);">No HP
+                                    @include('livewire.datatable-icon', ['field' => 'no_hp'])
+                                </a>
+                            </th>
+                            <th wire:click="sortBy('level')">
+                                <a href="javascript:void(0);">Level
+                                    @include('livewire.datatable-icon', ['field' => 'level'])
+                                </a>
+                            </th>
                             <th wire:click="sortBy('user_group')">
                                 <a href="javascript:void(0);">User Group
                                     @include('livewire.datatable-icon', ['field' => 'user_group'])
@@ -130,15 +202,19 @@
                             </th>
                         </thead>
                         <tbody>
-                            @foreach($dataUserGroup as $data)
+                            @foreach($dataUser as $data)
                             <tr>
                                 <td>
                                     <input type="checkbox" 
-                                    value="{{ $data->id_user_group }}" 
+                                    value="{{ $data->id }}" 
                                     class="new-control-input"
                                     wire:model="checked">
                                 </td>
                                 <td>{{ $loop->iteration }}</td>
+                                <td>{{ $data->name }}</td>
+                                <td>{{ $data->email }}</td>
+                                <td>{{ $data->no_hp }}</td>
+                                <td>{{ $data->level }}</td>
                                 <td>{{ $data->user_group }}</td>
                             </tr>
                             @endforeach
@@ -146,7 +222,7 @@
                     </table>
 
                     <div class="d-flex justify-content-center">
-                        {{ $dataUserGroup->links('livewire.pagination-links') }}
+                        {{ $dataUser->links('livewire.pagination-links') }}
                     </div>
 
                 </div>

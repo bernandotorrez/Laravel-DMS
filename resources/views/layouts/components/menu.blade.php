@@ -97,8 +97,11 @@
                     </svg>
                 </a>
                 <ul class="collapse submenu list-unstyled" id="starter-kit" data-parent="#topAccordion">
-                    <li class="{{ Request::is('admin.user-group.index') ? 'active' : '' }}">
+                    <li class="{{ Request::is('admin/user-group') ? 'active' : '' }}">
                         <a href="{{ url()->route('admin.user-group.index') }}"> User Group </a>
+                    </li>
+                    <li class="{{ Request::is('admin/user-account') ? 'active' : '' }}">
+                        <a href="{{ url()->route('admin.user-account.index') }}"> User Account </a>
                     </li>
                 </ul>
             </li>
