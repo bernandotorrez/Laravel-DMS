@@ -50,7 +50,7 @@
                                 <td>
                                     <input type="text" class="form-control" min="1"
                                     id="estimation-price.{{$key}}"
-                                    onchange="formatRupiah(this.value, '', {{ $key }})"
+                                    
                                     wire:model.lazy="detailData.{{$key}}.estimation_price"
                                     >
                                     @error('detailData.'.$key.'.estimation_price') <span class="error">{{ $message }}</span>

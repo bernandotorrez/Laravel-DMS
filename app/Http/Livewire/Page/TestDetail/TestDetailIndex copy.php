@@ -32,16 +32,7 @@ class TestDetailIndex extends Component
     public function updated($propertyName)
     {
         $this->validateOnly($propertyName);
-        $this->changeFormatEstimationPrice();
         $this->sumGrandTotal();
-    }
-
-    private function changeFormatEstimationPrice()
-    {
-        foreach($this->detailData as $key => $data)
-        {
-            $this->detailData[$key]['estimation_price'] = $this->currencyFormat($this->removeFormat($this->detailData[$key]['estimation_price']));
-        }
     }
 
     public function sumGrandTotal()
@@ -50,24 +41,24 @@ class TestDetailIndex extends Component
 
         foreach($this->detailData as $key => $data)
         {
-            $total_estimation_price = $this->detailData[$key]['qty'] * $this->removeFormat($this->detailData[$key]['estimation_price']);
-            $this->detailData[$key]['total_estimation_price'] = $this->currencyFormat($total_estimation_price);
+            $total_estimation_price = floatval($this->detailData[$key]['qty'] * $this->removeFormat($this->detailData[$key]['estimation_price']));
+            $this->detailData[$key]['total_estimation_price'] = $this->currencyFormat($total_estimation_price,2,',','.');
 
             $this->grandTotal += $total_estimation_price;
         }
 
-        $this->grandTotal = $this->currencyFormat($this->grandTotal);
+        $this->grandTotal = $this->currencyFormat($this->grandTotal,2,',','.');
     }
 
     private function removeFormat($value)
     {
-        $text = str_replace(",", "", $value);
+        $text = str_replace(".", "", $value);
         return $text;
     }
 
     private function currencyFormat($value)
     {
-        return number_format($value,2);
+        return number_format($value,2,',','.');
     }
 
     public function mount()
